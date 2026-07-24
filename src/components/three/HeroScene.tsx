@@ -1,19 +1,18 @@
 "use client";
 
-import { useRef, useMemo } from "react";
+import { useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import {
-  OrbitControls,
   Environment,
   Float,
   MeshDistortMaterial,
   Sparkles,
   PerspectiveCamera,
 } from "@react-three/drei";
-import * as THREE from "three";
+import type { Mesh } from "three";
 
 function Tooth() {
-  const meshRef = useRef<THREE.Mesh>(null);
+  const meshRef = useRef<Mesh>(null);
 
   useFrame((state) => {
     if (meshRef.current) {
