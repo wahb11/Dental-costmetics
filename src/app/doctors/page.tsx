@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,10 +8,6 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Link from "next/link";
 import { Calendar, Star, Award, MapPin, Search } from "lucide-react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const doctors = [
   {
@@ -113,63 +109,48 @@ const specializations = [
 export default function DoctorsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSpec, setSelectedSpec] = useState("All Specializations");
-  const doctorsRef = useRef(null);
 
   const filteredDoctors = doctors.filter((doctor) => {
-    const matchesSearch = doctor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    const matchesSearch =
+      doctor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       doctor.specialization.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesSpec = selectedSpec === "All Specializations" || 
+    const matchesSpec =
+      selectedSpec === "All Specializations" ||
       doctor.specialization.includes(selectedSpec);
     return matchesSearch && matchesSpec;
   });
 
-  useEffect(() => {
-    gsap.from(".doctor-card", {
-      scrollTrigger: {
-        trigger: doctorsRef.current,
-        start: "top 80%",
-      },
-      y: 80,
-      opacity: 0,
-      duration: 0.6,
-      stagger: 0.1,
-      ease: "power3.out",
-    });
-  }, [filteredDoctors]);
-
   return (
     <>
       <Navbar />
-      
-      {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-gradient-to-br from-primary/10 to-accent/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">
+
+      <section className="bg-gradient-to-br from-primary/10 to-accent/10 pb-16 pt-32">
+        <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+          <h1 className="mb-6 text-5xl font-bold md:text-6xl">
             Meet Our <span className="gradient-text">Expert Dentists</span>
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            World-class dental professionals dedicated to your oral health and beautiful smile
+          <p className="mx-auto mb-8 max-w-3xl text-xl text-muted-foreground">
+            World-class dental professionals dedicated to your oral health and
+            beautiful smile
           </p>
 
-          {/* Search Bar */}
-          <div className="max-w-2xl mx-auto">
+          <div className="mx-auto max-w-2xl">
             <div className="relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
+              <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
               <Input
                 type="text"
                 placeholder="Search by name or specialization..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-12 h-14 text-lg"
+                className="h-14 pl-12 text-lg"
               />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Filters */}
-      <section className="py-8 border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="border-b py-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap gap-3">
             {specializations.map((spec) => (
               <Button
@@ -185,31 +166,31 @@ export default function DoctorsPage() {
         </div>
       </section>
 
-      {/* Doctors Grid */}
-      <section ref={doctorsRef} className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-16 md:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {filteredDoctors.length === 0 ? (
-            <div className="text-center py-20">
+            <div className="py-20 text-center">
               <p className="text-xl text-muted-foreground">
                 No doctors found matching your criteria.
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
               {filteredDoctors.map((doctor) => (
-                <Card key={doctor.id} className="doctor-card shadow-lg hover:shadow-premium transition-all duration-300 hover:-translate-y-2">
+                <Card
+                  key={doctor.id}
+                  className="shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-premium"
+                >
                   <CardContent className="p-6">
-                    {/* Doctor Image */}
-                    <div className="text-center mb-4">
-                      <div className="text-7xl mb-3">{doctor.image}</div>
-                      <h3 className="text-2xl font-bold mb-1">{doctor.name}</h3>
-                      <p className="text-sm text-primary font-medium mb-2">
+                    <div className="mb-4 text-center">
+                      <div className="mb-3 text-7xl">{doctor.image}</div>
+                      <h3 className="mb-1 text-2xl font-bold">{doctor.name}</h3>
+                      <p className="mb-2 text-sm font-medium text-primary">
                         {doctor.specialization}
                       </p>
-                      
-                      {/* Rating */}
-                      <div className="flex items-center justify-center space-x-1 mb-3">
-                        <Star className="w-5 h-5 fill-yellow-500 text-yellow-500" />
+
+                      <div className="mb-3 flex items-center justify-center space-x-1">
+                        <Star className="h-5 w-5 fill-yellow-500 text-yellow-500" />
                         <span className="font-semibold">{doctor.rating}</span>
                         <span className="text-sm text-muted-foreground">
                           ({doctor.reviews} reviews)
@@ -217,10 +198,9 @@ export default function DoctorsPage() {
                       </div>
                     </div>
 
-                    {/* Details */}
-                    <div className="space-y-3 mb-6">
+                    <div className="mb-6 space-y-3">
                       <div className="flex items-start space-x-2">
-                        <Award className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                        <Award className="mt-0.5 h-5 w-5 flex-shrink-0 text-primary" />
                         <div>
                           <p className="text-sm font-medium">Experience</p>
                           <p className="text-sm text-muted-foreground">
@@ -230,7 +210,7 @@ export default function DoctorsPage() {
                       </div>
 
                       <div className="flex items-start space-x-2">
-                        <MapPin className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                        <MapPin className="mt-0.5 h-5 w-5 flex-shrink-0 text-primary" />
                         <div>
                           <p className="text-sm font-medium">Languages</p>
                           <p className="text-sm text-muted-foreground">
@@ -240,12 +220,12 @@ export default function DoctorsPage() {
                       </div>
 
                       <div>
-                        <p className="text-sm font-medium mb-1">Available Days</p>
+                        <p className="mb-1 text-sm font-medium">Available Days</p>
                         <div className="flex gap-2">
                           {doctor.availableDays.map((day) => (
                             <span
                               key={day}
-                              className="text-xs px-2 py-1 bg-primary/10 text-primary rounded"
+                              className="rounded bg-primary/10 px-2 py-1 text-xs text-primary"
                             >
                               {day}
                             </span>
@@ -253,21 +233,23 @@ export default function DoctorsPage() {
                         </div>
                       </div>
 
-                      <p className="text-sm text-muted-foreground italic">
-                        "{doctor.bio}"
+                      <p className="text-sm italic text-muted-foreground">
+                        &ldquo;{doctor.bio}&rdquo;
                       </p>
                     </div>
 
-                    {/* Actions */}
                     <div className="flex gap-2">
                       <Link href={`/doctors/${doctor.id}`} className="flex-1">
                         <Button variant="outline" className="w-full">
                           View Profile
                         </Button>
                       </Link>
-                      <Link href={`/appointments/book?doctor=${doctor.id}`} className="flex-1">
+                      <Link
+                        href={`/appointments/book?doctor=${doctor.id}`}
+                        className="flex-1"
+                      >
                         <Button className="w-full">
-                          <Calendar className="w-4 h-4 mr-2" />
+                          <Calendar className="mr-2 h-4 w-4" />
                           Book
                         </Button>
                       </Link>
@@ -280,14 +262,14 @@ export default function DoctorsPage() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-20 bg-secondary/30">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold mb-4">
-            Can't Find the Right Specialist?
+      <section className="bg-secondary/30 py-16 md:py-20">
+        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+          <h2 className="mb-4 text-4xl font-bold">
+            Can&apos;t Find the Right Specialist?
           </h2>
-          <p className="text-xl text-muted-foreground mb-8">
-            Contact us and we'll help you find the perfect doctor for your needs
+          <p className="mb-8 text-xl text-muted-foreground">
+            Contact us and we&apos;ll help you find the perfect doctor for your
+            needs
           </p>
           <Link href="/contact">
             <Button size="lg" className="shadow-lg">

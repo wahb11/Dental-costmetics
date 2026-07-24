@@ -1,24 +1,43 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Link from "next/link";
 import { Award, Heart, Users, Target, Calendar, Sparkles } from "lucide-react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const milestones = [
-  { year: "2011", title: "Founded", description: "Started with a vision to revolutionize dental care" },
-  { year: "2015", title: "Expansion", description: "Opened our second location and hired 10+ dentists" },
-  { year: "2018", title: "Technology", description: "Introduced state-of-the-art 3D imaging technology" },
-  { year: "2020", title: "Digital First", description: "Launched online booking and patient portal" },
-  { year: "2023", title: "Award Winning", description: "Recognized as Best Dental Clinic in the region" },
-  { year: "2026", title: "Innovation", description: "SmileSync platform launched with AI diagnostics" },
+  {
+    year: "2011",
+    title: "Founded",
+    description: "Started with a vision to revolutionize dental care",
+  },
+  {
+    year: "2015",
+    title: "Expansion",
+    description: "Opened our second location and hired 10+ dentists",
+  },
+  {
+    year: "2018",
+    title: "Technology",
+    description: "Introduced state-of-the-art 3D imaging technology",
+  },
+  {
+    year: "2020",
+    title: "Digital First",
+    description: "Launched online booking and patient portal",
+  },
+  {
+    year: "2023",
+    title: "Award Winning",
+    description: "Recognized as Best Dental Clinic in the region",
+  },
+  {
+    year: "2026",
+    title: "Innovation",
+    description: "SmileSync platform launched with AI diagnostics",
+  },
 ];
 
 const values = [
@@ -72,92 +91,46 @@ const team = [
 ];
 
 export default function AboutPage() {
-  const timelineRef = useRef(null);
-  const valuesRef = useRef(null);
-  const teamRef = useRef(null);
-
-  useEffect(() => {
-    // Timeline animation
-    gsap.from(".timeline-item", {
-      scrollTrigger: {
-        trigger: timelineRef.current,
-        start: "top 80%",
-      },
-      x: -100,
-      opacity: 0,
-      duration: 0.6,
-      stagger: 0.2,
-      ease: "power3.out",
-    });
-
-    // Values animation
-    gsap.from(".value-card", {
-      scrollTrigger: {
-        trigger: valuesRef.current,
-        start: "top 80%",
-      },
-      y: 80,
-      opacity: 0,
-      duration: 0.6,
-      stagger: 0.15,
-      ease: "power3.out",
-    });
-
-    // Team animation
-    gsap.from(".team-card", {
-      scrollTrigger: {
-        trigger: teamRef.current,
-        start: "top 80%",
-      },
-      scale: 0.8,
-      opacity: 0,
-      duration: 0.6,
-      stagger: 0.1,
-      ease: "back.out(1.7)",
-    });
-  }, []);
-
   return (
     <>
       <Navbar />
-      
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 bg-gradient-to-br from-primary/10 to-accent/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">
+
+      <section className="bg-gradient-to-br from-primary/10 to-accent/10 pb-20 pt-32">
+        <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+          <h1 className="mb-6 text-5xl font-bold md:text-6xl">
             About <span className="gradient-text">SmileSync</span>
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Transforming dental care through innovation, compassion, and excellence. 
-            We're more than a clinic—we're your partners in oral health.
+          <p className="mx-auto max-w-3xl text-xl text-muted-foreground">
+            Transforming dental care through innovation, compassion, and
+            excellence. We&apos;re more than a clinic—we&apos;re your partners
+            in oral health.
           </p>
         </div>
       </section>
 
-      {/* Mission & Vision */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <section className="py-16 md:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             <Card className="shadow-premium">
               <CardContent className="p-8">
-                <Target className="w-12 h-12 text-primary mb-4" />
-                <h2 className="text-3xl font-bold mb-4">Our Mission</h2>
-                <p className="text-lg text-muted-foreground leading-relaxed">
-                  To provide exceptional, patient-centered dental care using the latest 
-                  technology and techniques. We're committed to making every visit 
-                  comfortable, efficient, and effective.
+                <Target className="mb-4 h-12 w-12 text-primary" />
+                <h2 className="mb-4 text-3xl font-bold">Our Mission</h2>
+                <p className="text-lg leading-relaxed text-muted-foreground">
+                  To provide exceptional, patient-centered dental care using the
+                  latest technology and techniques. We&apos;re committed to
+                  making every visit comfortable, efficient, and effective.
                 </p>
               </CardContent>
             </Card>
 
             <Card className="shadow-premium">
               <CardContent className="p-8">
-                <Sparkles className="w-12 h-12 text-primary mb-4" />
-                <h2 className="text-3xl font-bold mb-4">Our Vision</h2>
-                <p className="text-lg text-muted-foreground leading-relaxed">
-                  To revolutionize dental care by seamlessly integrating advanced 
-                  technology with personalized service, making quality oral healthcare 
-                  accessible and enjoyable for everyone.
+                <Sparkles className="mb-4 h-12 w-12 text-primary" />
+                <h2 className="mb-4 text-3xl font-bold">Our Vision</h2>
+                <p className="text-lg leading-relaxed text-muted-foreground">
+                  To revolutionize dental care by seamlessly integrating
+                  advanced technology with personalized service, making quality
+                  oral healthcare accessible and enjoyable for everyone.
                 </p>
               </CardContent>
             </Card>
@@ -165,25 +138,31 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Timeline */}
-      <section ref={timelineRef} className="py-20 bg-secondary/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Our Journey</h2>
+      <section className="bg-secondary/30 py-16 md:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-12 text-center md:mb-16">
+            <h2 className="mb-4 text-4xl font-bold">Our Journey</h2>
             <p className="text-xl text-muted-foreground">
               15+ years of excellence in dental care
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {milestones.map((milestone, index) => (
-              <Card key={index} className="timeline-item shadow-lg">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {milestones.map((milestone) => (
+              <Card key={milestone.year} className="shadow-lg">
                 <CardContent className="p-6">
-                  <div className="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center text-xl font-bold mb-4">
-                    {milestone.year}
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-xl font-bold text-white">
+                    {milestone.year.slice(2)}
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">{milestone.title}</h3>
-                  <p className="text-muted-foreground">{milestone.description}</p>
+                  <p className="mb-1 text-sm font-medium text-primary">
+                    {milestone.year}
+                  </p>
+                  <h3 className="mb-2 text-xl font-semibold">
+                    {milestone.title}
+                  </h3>
+                  <p className="text-muted-foreground">
+                    {milestone.description}
+                  </p>
                 </CardContent>
               </Card>
             ))}
@@ -191,24 +170,23 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Values */}
-      <section ref={valuesRef} className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Our Core Values</h2>
+      <section className="py-16 md:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-12 text-center md:mb-16">
+            <h2 className="mb-4 text-4xl font-bold">Our Core Values</h2>
             <p className="text-xl text-muted-foreground">
               The principles that guide everything we do
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {values.map((value, index) => (
-              <Card key={index} className="value-card text-center shadow-lg">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {values.map((value) => (
+              <Card key={value.title} className="text-center shadow-lg">
                 <CardContent className="p-8">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <value.icon className="w-8 h-8 text-primary" />
+                  <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+                    <value.icon className="h-8 w-8 text-primary" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-3">{value.title}</h3>
+                  <h3 className="mb-3 text-xl font-semibold">{value.title}</h3>
                   <p className="text-muted-foreground">{value.description}</p>
                 </CardContent>
               </Card>
@@ -217,52 +195,57 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Team */}
-      <section ref={teamRef} className="py-20 bg-secondary/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Meet Our Leadership</h2>
+      <section className="bg-secondary/30 py-16 md:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-12 text-center md:mb-16">
+            <h2 className="mb-4 text-4xl font-bold">Meet Our Leadership</h2>
             <p className="text-xl text-muted-foreground">
               Expert professionals dedicated to your care
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {team.map((member, index) => (
-              <Card key={index} className="team-card text-center shadow-lg hover:shadow-premium transition-all">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {team.map((member) => (
+              <Card
+                key={member.name}
+                className="text-center shadow-lg transition-all hover:shadow-premium"
+              >
                 <CardContent className="p-6">
-                  <div className="text-6xl mb-4">{member.image}</div>
-                  <h3 className="text-xl font-semibold mb-1">{member.name}</h3>
-                  <p className="text-sm text-primary font-medium mb-2">{member.role}</p>
-                  <p className="text-sm text-muted-foreground">{member.specialization}</p>
+                  <div className="mb-4 text-6xl">{member.image}</div>
+                  <h3 className="mb-1 text-xl font-semibold">{member.name}</h3>
+                  <p className="mb-2 text-sm font-medium text-primary">
+                    {member.role}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {member.specialization}
+                  </p>
                 </CardContent>
               </Card>
             ))}
           </div>
 
-          <div className="text-center mt-12">
+          <div className="mt-12 text-center">
             <Link href="/doctors">
               <Button size="lg">
                 View All Doctors
-                <Users className="w-5 h-5 ml-2" />
+                <Users className="ml-2 h-5 w-5" />
               </Button>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold mb-6">
+      <section className="py-16 md:py-20">
+        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+          <h2 className="mb-6 text-4xl font-bold">
             Ready to Experience the SmileSync Difference?
           </h2>
-          <p className="text-xl text-muted-foreground mb-8">
+          <p className="mb-8 text-xl text-muted-foreground">
             Join thousands of satisfied patients who trust us with their smiles
           </p>
           <Link href="/appointments/book">
             <Button size="lg" className="shadow-lg">
-              <Calendar className="w-5 h-5 mr-2" />
+              <Calendar className="mr-2 h-5 w-5" />
               Book Your Appointment
             </Button>
           </Link>

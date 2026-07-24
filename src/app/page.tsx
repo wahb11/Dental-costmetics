@@ -1,7 +1,5 @@
 "use client";
 
-import { Suspense, useEffect, useRef, useState } from "react";
-import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Navbar from "@/components/layout/Navbar";
@@ -15,22 +13,11 @@ import {
   Heart,
   Sparkles,
   ArrowRight,
-  CheckCircle,
   Star,
   Users,
   TrendingUp,
   ChevronRight,
 } from "lucide-react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-// Dynamically import Three.js component
-const HeroScene = dynamic(() => import("@/components/three/HeroScene"), {
-  ssr: false,
-  loading: () => <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10" />,
-});
-
-gsap.registerPlugin(ScrollTrigger);
 
 const services = [
   {
@@ -90,119 +77,40 @@ const features = [
 ];
 
 export default function HomePage() {
-  const heroRef = useRef(null);
-  const servicesRef = useRef(null);
-  const statsRef = useRef(null);
-  const featuresRef = useRef(null);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!mounted) return;
-
-    // Hero animation
-    const heroTimeline = gsap.timeline();
-    heroTimeline
-      .from(".hero-title", {
-        y: 100,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out",
-      })
-      .from(
-        ".hero-subtitle",
-        {
-          y: 50,
-          opacity: 0,
-          duration: 0.8,
-          ease: "power3.out",
-        },
-        "-=0.5"
-      )
-      .from(
-        ".hero-buttons",
-        {
-          y: 30,
-          opacity: 0,
-          duration: 0.8,
-          ease: "power3.out",
-        },
-        "-=0.5"
-      );
-
-    // Services animation
-    gsap.from(".service-card", {
-      scrollTrigger: {
-        trigger: servicesRef.current,
-        start: "top 80%",
-      },
-      y: 100,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.2,
-      ease: "power3.out",
-    });
-
-    // Stats animation
-    gsap.from(".stat-card", {
-      scrollTrigger: {
-        trigger: statsRef.current,
-        start: "top 80%",
-      },
-      scale: 0.8,
-      opacity: 0,
-      duration: 0.6,
-      stagger: 0.1,
-      ease: "back.out(1.7)",
-    });
-
-    // Features animation
-    gsap.from(".feature-card", {
-      scrollTrigger: {
-        trigger: featuresRef.current,
-        start: "top 80%",
-      },
-      x: -100,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.15,
-      ease: "power3.out",
-    });
-  }, [mounted]);
-
   return (
     <>
       <Navbar />
-      
+
       {/* Hero Section */}
-      <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden noise">
-        <Suspense fallback={<div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10" />}>
-          <HeroScene />
-        </Suspense>
-        
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="hero-title text-5xl md:text-7xl font-bold mb-6">
+      <section className="relative flex min-h-[85vh] items-center justify-center overflow-hidden bg-gradient-to-br from-primary/15 via-background to-accent/20 pt-24">
+        <div
+          className="pointer-events-none absolute inset-0 opacity-40"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 20% 30%, hsl(var(--primary) / 0.25), transparent 45%), radial-gradient(circle at 80% 70%, hsl(202 83% 41% / 0.2), transparent 40%)",
+          }}
+        />
+        <div className="relative z-10 mx-auto max-w-7xl px-4 py-16 text-center sm:px-6 lg:px-8">
+          <h1 className="mb-6 text-5xl font-bold md:text-7xl">
             Your Perfect Smile
             <br />
             <span className="gradient-text">Starts Here</span>
           </h1>
-          <p className="hero-subtitle text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Experience modern dental care with cutting-edge technology and compassionate professionals.
+          <p className="mx-auto mb-8 max-w-2xl text-xl text-muted-foreground md:text-2xl">
+            Experience modern dental care with cutting-edge technology and
+            compassionate professionals.
           </p>
-          <div className="hero-buttons flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col justify-center gap-4 sm:flex-row">
             <Link href="/appointments/book">
               <Button size="lg" className="text-lg shadow-premium">
-                <Calendar className="w-5 h-5 mr-2" />
+                <Calendar className="mr-2 h-5 w-5" />
                 Book Appointment
               </Button>
             </Link>
             <Link href="/services">
               <Button size="lg" variant="outline" className="text-lg">
                 Explore Services
-                <ArrowRight className="w-5 h-5 ml-2" />
+                <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
           </div>
@@ -210,14 +118,14 @@ export default function HomePage() {
       </section>
 
       {/* Stats Section */}
-      <section ref={statsRef} className="py-20 bg-secondary/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {stats.map((stat, index) => (
-              <Card key={index} className="stat-card glass border-none">
+      <section className="bg-secondary/30 py-16 md:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {stats.map((stat) => (
+              <Card key={stat.label} className="glass border-none">
                 <CardContent className="p-6 text-center">
-                  <stat.icon className="w-12 h-12 mx-auto mb-4 text-primary" />
-                  <div className="text-4xl font-bold mb-2">{stat.value}</div>
+                  <stat.icon className="mx-auto mb-4 h-12 w-12 text-primary" />
+                  <div className="mb-2 text-4xl font-bold">{stat.value}</div>
                   <div className="text-sm text-muted-foreground">{stat.label}</div>
                 </CardContent>
               </Card>
@@ -227,62 +135,127 @@ export default function HomePage() {
       </section>
 
       {/* Services Section */}
-      <section ref={servicesRef} className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+      <section className="py-16 md:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-12 text-center md:mb-16">
+            <h2 className="mb-4 text-4xl font-bold md:text-5xl">
               Our <span className="gradient-text">Services</span>
             </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="mx-auto max-w-2xl text-xl text-muted-foreground">
               Comprehensive dental care tailored to your unique needs
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {services.map((service, index) => (
-              <Link key={index} href={service.href}>
-                <Card className="service-card group hover:shadow-premium transition-all duration-300 hover:-translate-y-2 cursor-pointer">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {services.map((service) => (
+              <Link key={service.href} href={service.href}>
+                <Card className="group h-full cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-premium">
                   <CardContent className="p-6">
-                    <service.icon className="w-12 h-12 mb-4 text-primary group-hover:scale-110 transition-transform" />
-                    <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
-                    <p className="text-sm text-muted-foreground mb-4">
+                    <service.icon className="mb-4 h-12 w-12 text-primary transition-transform group-hover:scale-110" />
+                    <h3 className="mb-2 text-xl font-semibold">{service.title}</h3>
+                    <p className="mb-4 text-sm text-muted-foreground">
                       {service.description}
                     </p>
-                    <div className="flex items-center text-primary text-sm font-medium">
+                    <div className="flex items-center text-sm font-medium text-primary">
                       Learn More
-                      <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                      <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </div>
                   </CardContent>
                 </Card>
               </Link>
             ))}
           </div>
+
+          <div className="mt-10 text-center">
+            <Link href="/services">
+              <Button variant="outline" size="lg">
+                View All Services
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Doctors preview */}
+      <section className="bg-secondary/30 py-16 md:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-12 text-center md:mb-16">
+            <h2 className="mb-4 text-4xl font-bold md:text-5xl">
+              Meet Our <span className="gradient-text">Doctors</span>
+            </h2>
+            <p className="mx-auto max-w-2xl text-xl text-muted-foreground">
+              Experienced specialists dedicated to your smile
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            {[
+              {
+                name: "Dr. Sarah Johnson",
+                role: "General Dentistry & Implantology",
+                emoji: "👩‍⚕️",
+              },
+              {
+                name: "Dr. Michael Chen",
+                role: "Orthodontics & Facial Orthopedics",
+                emoji: "👨‍⚕️",
+              },
+              {
+                name: "Dr. Emily Rodriguez",
+                role: "Cosmetic & Aesthetic Dentistry",
+                emoji: "👩‍⚕️",
+              },
+            ].map((doctor) => (
+              <Card key={doctor.name} className="text-center shadow-lg">
+                <CardContent className="p-8">
+                  <div className="mb-4 text-6xl">{doctor.emoji}</div>
+                  <h3 className="mb-1 text-xl font-semibold">{doctor.name}</h3>
+                  <p className="mb-6 text-sm text-primary">{doctor.role}</p>
+                  <Link href="/doctors">
+                    <Button variant="outline" className="w-full">
+                      View Profile
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          <div className="mt-10 text-center">
+            <Link href="/doctors">
+              <Button size="lg">
+                <Users className="mr-2 h-5 w-5" />
+                See All Doctors
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section ref={featuresRef} className="py-20 bg-secondary/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+      <section className="py-16 md:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-12 text-center md:mb-16">
+            <h2 className="mb-4 text-4xl font-bold md:text-5xl">
               Why Choose <span className="gradient-text">SmileSync</span>
             </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="mx-auto max-w-2xl text-xl text-muted-foreground">
               Experience the difference with our patient-first approach
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {features.map((feature, index) => (
-              <Card key={index} className="feature-card glass border-none">
-                <CardContent className="p-8 flex items-start space-x-4">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {features.map((feature) => (
+              <Card key={feature.title} className="glass border-none">
+                <CardContent className="flex items-start space-x-4 p-8">
                   <div className="flex-shrink-0">
-                    <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center">
-                      <feature.icon className="w-8 h-8 text-primary" />
+                    <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-primary/10">
+                      <feature.icon className="h-8 w-8 text-primary" />
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                    <h3 className="mb-2 text-xl font-semibold">{feature.title}</h3>
                     <p className="text-muted-foreground">{feature.description}</p>
                   </div>
                 </CardContent>
@@ -293,19 +266,20 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="py-16 md:py-20">
+        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
           <Card className="glass border-none shadow-premium">
             <CardContent className="p-12">
-              <h2 className="text-4xl font-bold mb-4">
+              <h2 className="mb-4 text-4xl font-bold">
                 Ready for Your Best Smile?
               </h2>
-              <p className="text-xl text-muted-foreground mb-8">
-                Book your appointment today and take the first step towards perfect oral health
+              <p className="mb-8 text-xl text-muted-foreground">
+                Book your appointment today and take the first step towards
+                perfect oral health
               </p>
               <Link href="/appointments/book">
                 <Button size="lg" className="text-lg shadow-lg">
-                  <Calendar className="w-5 h-5 mr-2" />
+                  <Calendar className="mr-2 h-5 w-5" />
                   Schedule Your Visit
                 </Button>
               </Link>
