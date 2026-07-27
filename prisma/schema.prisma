@@ -1,5 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// SmileSync Dental Clinic Database Schema
+// Integrated with Google Calendar & Email Notifications
 
 generator client {
   provider = "prisma-client-js"
@@ -163,18 +163,23 @@ model Service {
 }
 
 model Appointment {
-  id        String            @id @default(cuid())
-  patientId String
-  doctorId  String
-  serviceId String
-  date      DateTime
-  startTime String // Format: "HH:MM"
-  endTime   String // Format: "HH:MM"
-  status    AppointmentStatus @default(PENDING)
-  notes     String?
-  reason    String?
-  createdAt DateTime          @default(now())
-  updatedAt DateTime          @updatedAt
+  id                String            @id @default(cuid())
+  patientId         String
+  doctorId          String
+  serviceId         String
+  date              DateTime
+  startTime         String // Format: "HH:MM"
+  endTime           String // Format: "HH:MM"
+  status            AppointmentStatus @default(PENDING)
+  notes             String?
+  reason            String?
+  googleCalendarId  String? // Google Calendar Event ID
+  reminderSent      Boolean           @default(false)
+  confirmationSent  Boolean           @default(false)
+  cancellationNote  String?
+  rescheduledFrom   String? // ID of original appointment if rescheduled
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
 
   // Relations
   patient Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
@@ -185,6 +190,7 @@ model Appointment {
   @@index([doctorId])
   @@index([date])
   @@index([status])
+  @@index([googleCalendarId])
 }
 
 model MedicalRecord {
