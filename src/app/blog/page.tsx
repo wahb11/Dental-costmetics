@@ -6,8 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import PageMotion from "@/components/motion/PageMotion";
 import Link from "next/link";
-import { Calendar, User, ArrowRight, Search, Tag } from "lucide-react";
+import { Calendar, User, ArrowRight, Search } from "lucide-react";
 
 const blogPosts = [
   {
@@ -88,129 +89,137 @@ export default function BlogPage() {
   return (
     <>
       <Navbar />
-      
-      {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-gradient-to-br from-primary/10 to-accent/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">
-            Dental <span className="gradient-text">Blog</span>
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            Expert insights, tips, and news from our dental professionals
-          </p>
 
-          {/* Search */}
-          <div className="max-w-2xl mx-auto">
-            <div className="relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
-              <Input
-                type="text"
-                placeholder="Search articles..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-12 h-14 text-lg"
-              />
+      <PageMotion deps={[filteredPosts]}>
+        {/* Hero Section */}
+        <section className="page-hero bg-gradient-to-br from-primary/10 to-accent/10 pb-16 pt-32">
+          <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+            <h1 className="hero-anim mb-6 text-5xl font-bold md:text-6xl">
+              Dental <span className="gradient-text">Blog</span>
+            </h1>
+            <p className="hero-anim mx-auto mb-8 max-w-3xl text-xl text-muted-foreground">
+              Expert insights, tips, and news from our dental professionals
+            </p>
+
+            {/* Search */}
+            <div className="hero-anim mx-auto max-w-2xl">
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  type="text"
+                  placeholder="Search articles..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="h-14 pl-12 text-lg"
+                />
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Categories */}
-      <section className="py-8 border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap gap-3">
-            {categories.map((category) => (
-              <Button
-                key={category}
-                variant={selectedCategory === category ? "default" : "outline"}
-                onClick={() => setSelectedCategory(category)}
-                size="sm"
-              >
-                {category}
-              </Button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Blog Posts */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {filteredPosts.length === 0 ? (
-            <div className="text-center py-20">
-              <p className="text-xl text-muted-foreground">
-                No articles found matching your criteria.
-              </p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredPosts.map((post) => (
-                <Card key={post.id} className="group hover:shadow-premium transition-all duration-300 hover:-translate-y-2">
-                  <CardHeader>
-                    <div className="text-6xl mb-4">{post.image}</div>
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className="text-xs px-3 py-1 bg-primary/10 text-primary rounded-full">
-                        {post.category}
-                      </span>
-                      <span className="text-xs text-muted-foreground">
-                        {post.readTime}
-                      </span>
-                    </div>
-                    <CardTitle className="text-xl mb-2 group-hover:text-primary transition-colors">
-                      {post.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground mb-4">
-                      {post.excerpt}
-                    </p>
-                    
-                    <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
-                      <div className="flex items-center">
-                        <User className="w-4 h-4 mr-1" />
-                        {post.author}
-                      </div>
-                      <div className="flex items-center">
-                        <Calendar className="w-4 h-4 mr-1" />
-                        {new Date(post.date).toLocaleDateString()}
-                      </div>
-                    </div>
-
-                    <Link href={`/blog/${post.id}`}>
-                      <Button variant="ghost" className="w-full group-hover:bg-primary group-hover:text-white transition-all">
-                        Read More
-                        <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                      </Button>
-                    </Link>
-                  </CardContent>
-                </Card>
+        {/* Categories */}
+        <section className="anim-section reveal border-b py-8">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-wrap gap-3">
+              {categories.map((category) => (
+                <Button
+                  key={category}
+                  variant={selectedCategory === category ? "default" : "outline"}
+                  onClick={() => setSelectedCategory(category)}
+                  size="sm"
+                >
+                  {category}
+                </Button>
               ))}
             </div>
-          )}
-        </div>
-      </section>
-
-      {/* Newsletter */}
-      <section className="py-20 bg-secondary/30">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold mb-4">
-            Subscribe to Our Newsletter
-          </h2>
-          <p className="text-xl text-muted-foreground mb-8">
-            Get the latest dental health tips and news delivered to your inbox
-          </p>
-          <div className="flex gap-3 max-w-md mx-auto">
-            <Input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-1"
-            />
-            <Button size="lg">
-              Subscribe
-            </Button>
           </div>
-        </div>
-      </section>
+        </section>
+
+        {/* Blog Posts */}
+        <section className="py-20">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            {filteredPosts.length === 0 ? (
+              <div className="py-20 text-center">
+                <p className="text-xl text-muted-foreground">
+                  No articles found matching your criteria.
+                </p>
+              </div>
+            ) : (
+              <div className="reveal-stagger grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {filteredPosts.map((post) => (
+                  <Card
+                    key={post.id}
+                    className="reveal-item group transition-all duration-300 hover:-translate-y-2 hover:shadow-premium"
+                  >
+                    <CardHeader>
+                      <div className="mb-4 text-6xl">{post.image}</div>
+                      <div className="mb-3 flex items-center gap-2">
+                        <span className="rounded-full bg-primary/10 px-3 py-1 text-xs text-primary">
+                          {post.category}
+                        </span>
+                        <span className="text-xs text-muted-foreground">
+                          {post.readTime}
+                        </span>
+                      </div>
+                      <CardTitle className="mb-2 text-xl transition-colors group-hover:text-primary">
+                        {post.title}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="mb-4 text-muted-foreground">
+                        {post.excerpt}
+                      </p>
+
+                      <div className="mb-4 flex items-center justify-between text-sm text-muted-foreground">
+                        <div className="flex items-center">
+                          <User className="mr-1 h-4 w-4" />
+                          {post.author}
+                        </div>
+                        <div className="flex items-center">
+                          <Calendar className="mr-1 h-4 w-4" />
+                          {new Date(post.date).toLocaleDateString()}
+                        </div>
+                      </div>
+
+                      <Link href={`/blog/${post.id}`}>
+                        <Button
+                          variant="ghost"
+                          className="w-full transition-all group-hover:bg-primary group-hover:text-white"
+                        >
+                          Read More
+                          <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                        </Button>
+                      </Link>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* Newsletter */}
+        <section className="anim-section reveal-scale bg-secondary/30 py-20">
+          <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+            <h2 className="mb-4 text-4xl font-bold">
+              Subscribe to Our Newsletter
+            </h2>
+            <p className="mb-8 text-xl text-muted-foreground">
+              Get the latest dental health tips and news delivered to your inbox
+            </p>
+            <div className="mx-auto flex max-w-md gap-3">
+              <Input
+                type="email"
+                placeholder="Enter your email"
+                className="flex-1"
+              />
+              <Button size="lg">
+                Subscribe
+              </Button>
+            </div>
+          </div>
+        </section>
+      </PageMotion>
 
       <Footer />
     </>

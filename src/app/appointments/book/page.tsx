@@ -1,14 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import PageMotion from "@/components/motion/PageMotion";
 import { Calendar, User, Stethoscope, CheckCircle, ArrowRight, ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 const steps = [
   { id: 1, name: "Service", icon: Stethoscope },
@@ -33,6 +35,7 @@ const doctors = [
     specialization: "General Dentistry",
     rating: 4.9,
     image: "👩‍⚕️",
+    email: process.env.NEXT_PUBLIC_DOCTOR_EMAIL_SARAH || "doctor.sarah@example.com",
   },
   {
     id: "2",
@@ -40,6 +43,7 @@ const doctors = [
     specialization: "Orthodontics",
     rating: 4.8,
     image: "👨‍⚕️",
+    email: process.env.NEXT_PUBLIC_DOCTOR_EMAIL_MICHAEL || "doctor.michael@example.com",
   },
   {
     id: "3",
@@ -47,6 +51,7 @@ const doctors = [
     specialization: "Cosmetic Dentistry",
     rating: 5.0,
     image: "👩‍⚕️",
+    email: process.env.NEXT_PUBLIC_DOCTOR_EMAIL_EMILY || "doctor.emily@example.com",
   },
   {
     id: "4",
@@ -54,6 +59,7 @@ const doctors = [
     specialization: "Oral Surgery",
     rating: 4.9,
     image: "👨‍⚕️",
+    email: process.env.NEXT_PUBLIC_DOCTOR_EMAIL_JAMES || "doctor.james@example.com",
   },
 ];
 
@@ -72,6 +78,10 @@ export default function BookAppointmentPage() {
   const [selectedDoctor, setSelectedDoctor] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
+  const [bookedTimes, setBookedTimes] = useState<string[]>([]);
+  const [loadingSlots, setLoadingSlots] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -80,36 +90,131 @@ export default function BookAppointmentPage() {
     notes: "",
   });
 
+  useEffect(() => {
+    setSelectedTime("");
+    setBookedTimes([]);
+    setSubmitError("");
+
+    const doctor = doctors.find((item) => item.id === selectedDoctor);
+    if (!doctor || !selectedDate) {
+      setLoadingSlots(false);
+      return;
+    }
+
+    const controller = new AbortController();
+    const params = new URLSearchParams({
+      doctorEmail: doctor.email,
+      date: selectedDate,
+    });
+
+    setLoadingSlots(true);
+    fetch(`/api/appointments/slots?${params}`, { signal: controller.signal })
+      .then(async (response) => {
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.error || "Could not load available times.");
+        }
+        setBookedTimes(data.bookedTimes || []);
+      })
+      .catch((error) => {
+        if (error instanceof Error && error.name !== "AbortError") {
+          setSubmitError(error.message);
+        }
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setLoadingSlots(false);
+      });
+
+    return () => controller.abort();
+  }, [selectedDoctor, selectedDate]);
+
   const handleNext = () => {
-    if (currentStep < 4) setCurrentStep(currentStep + 1);
+    if (currentStep < 4) {
+      setSubmitError("");
+      setCurrentStep(currentStep + 1);
+    }
   };
 
   const handleBack = () => {
-    if (currentStep > 1) setCurrentStep(currentStep - 1);
+    if (currentStep > 1) {
+      setSubmitError("");
+      setCurrentStep(currentStep - 1);
+    }
   };
 
   const handleSubmit = async () => {
-    // TODO: Implement API call to create appointment
-    console.log({
-      service: selectedService,
-      doctor: selectedDoctor,
-      date: selectedDate,
-      time: selectedTime,
-      ...formData,
-    });
-    alert("Appointment booked successfully!");
+    setSubmitting(true);
+    setSubmitError("");
+
+    const doctor = doctors.find((d) => d.id === selectedDoctor);
+    const service = services.find((s) => s.id === selectedService);
+
+    if (!doctor || !service) {
+      setSubmitError("Please select a service and doctor.");
+      setSubmitting(false);
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/appointments/book", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          phone: formData.phone,
+          notes: formData.notes,
+          doctorId: doctor.id,
+          doctorName: doctor.name,
+          doctorEmail: doctor.email,
+          serviceId: service.id,
+          serviceName: service.name,
+          date: selectedDate,
+          startTime: selectedTime,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        if (res.status === 409) {
+          setBookedTimes((times) =>
+            times.includes(selectedTime) ? times : [...times, selectedTime]
+          );
+          setSelectedTime("");
+          setCurrentStep(2);
+        }
+        throw new Error(data.error || "Booking failed");
+      }
+
+      toast.success(
+        data.message ||
+          "Appointment booked! Confirmation emails were sent to you and your doctor."
+      );
+      setBookedTimes((times) =>
+        times.includes(selectedTime) ? times : [...times, selectedTime]
+      );
+      setSelectedTime("");
+      setCurrentStep(2);
+    } catch (err) {
+      setSubmitError(
+        err instanceof Error ? err.message : "Could not complete booking."
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
-    <>
+    <PageMotion deps={[currentStep]}>
       <Navbar />
       <div className="min-h-screen pt-24 pb-12">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Progress Steps */}
-          <div className="mb-12">
+          <div className="page-hero reveal mb-12">
             <div className="flex items-center justify-between">
               {steps.map((step, index) => (
-                <div key={step.id} className="flex items-center flex-1">
+                <div key={step.id} className="hero-anim flex items-center flex-1">
                   <div className="flex flex-col items-center">
                     <div
                       className={cn(
@@ -146,7 +251,7 @@ export default function BookAppointmentPage() {
           </div>
 
           {/* Step Content */}
-          <Card className="shadow-premium">
+          <Card className="reveal-scale shadow-premium">
             <CardHeader>
               <CardTitle className="text-3xl">
                 {currentStep === 1 && "Select Service"}
@@ -164,12 +269,12 @@ export default function BookAppointmentPage() {
             <CardContent className="space-y-6">
               {/* Step 1: Select Service */}
               {currentStep === 1 && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="reveal-stagger grid grid-cols-1 md:grid-cols-2 gap-4">
                   {services.map((service) => (
                     <Card
                       key={service.id}
                       className={cn(
-                        "cursor-pointer transition-all hover:shadow-lg",
+                        "reveal-item cursor-pointer transition-all hover:shadow-lg",
                         selectedService === service.id &&
                           "ring-2 ring-primary bg-primary/5"
                       )}
@@ -197,12 +302,12 @@ export default function BookAppointmentPage() {
                   {/* Doctor Selection */}
                   <div>
                     <Label className="text-lg mb-4 block">Select Doctor</Label>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="reveal-stagger grid grid-cols-1 md:grid-cols-2 gap-4">
                       {doctors.map((doctor) => (
                         <Card
                           key={doctor.id}
                           className={cn(
-                            "cursor-pointer transition-all hover:shadow-lg",
+                            "reveal-item cursor-pointer transition-all hover:shadow-lg",
                             selectedDoctor === doctor.id &&
                               "ring-2 ring-primary bg-primary/5"
                           )}
@@ -243,17 +348,22 @@ export default function BookAppointmentPage() {
                   {/* Time Selection */}
                   <div>
                     <Label className="text-lg mb-4 block">Select Time</Label>
-                    <div className="grid grid-cols-3 gap-3">
-                      {timeSlots.map((time) => (
-                        <Button
-                          key={time}
-                          variant={selectedTime === time ? "default" : "outline"}
-                          onClick={() => setSelectedTime(time)}
-                          className="w-full"
-                        >
-                          {time}
-                        </Button>
-                      ))}
+                    <div className="reveal-stagger grid grid-cols-3 gap-3">
+                      {timeSlots.map((time) => {
+                        const isBooked = bookedTimes.includes(time);
+
+                        return (
+                          <Button
+                            key={time}
+                            variant={selectedTime === time ? "default" : "outline"}
+                            onClick={() => setSelectedTime(time)}
+                            disabled={loadingSlots || isBooked}
+                            className="reveal-item w-full"
+                          >
+                            {isBooked ? `${time} — Booked` : time}
+                          </Button>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
@@ -390,18 +500,21 @@ export default function BookAppointmentPage() {
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 ) : (
-                  <Button onClick={handleSubmit} size="lg">
+                  <Button onClick={handleSubmit} size="lg" disabled={submitting}>
                     <CheckCircle className="w-5 h-5 mr-2" />
-                    Confirm Booking
+                    {submitting ? "Booking..." : "Confirm Booking"}
                   </Button>
                 )}
               </div>
+              {submitError && (
+                <p className="mt-4 text-sm text-destructive">{submitError}</p>
+              )}
             </CardContent>
           </Card>
         </div>
       </div>
       <Footer />
-    </>
+    </PageMotion>
   );
 
   function canProceed() {

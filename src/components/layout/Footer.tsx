@@ -1,10 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Phone, Mail, MapPin, Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const footerLinks = {
   services: [
@@ -29,17 +34,40 @@ const footerLinks = {
 
 export default function Footer() {
   const [currentYear, setCurrentYear] = useState(2026);
+  const footerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     setCurrentYear(new Date().getFullYear());
   }, []);
 
+  useGSAP(
+    () => {
+      gsap.fromTo(
+        ".footer-col",
+        { y: 40, autoAlpha: 0 },
+        {
+          y: 0,
+          autoAlpha: 1,
+          duration: 0.7,
+          stagger: 0.1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: footerRef.current,
+            start: "top 90%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    },
+    { scope: footerRef }
+  );
+
   return (
-    <footer className="bg-secondary/30 border-t border-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
+    <footer ref={footerRef} className="border-t border-border bg-secondary/30">
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-5">
           {/* Brand */}
-          <div className="lg:col-span-2">
+          <div className="footer-col lg:col-span-2">
             <Link href="/" className="flex items-center space-x-2 mb-4">
               <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
                 <span className="text-2xl">🦷</span>
@@ -66,8 +94,8 @@ export default function Footer() {
           </div>
 
           {/* Services */}
-          <div>
-            <h3 className="font-semibold mb-4">Services</h3>
+          <div className="footer-col">
+            <h3 className="mb-4 font-semibold">Services</h3>
             <ul className="space-y-2">
               {footerLinks.services.map((link) => (
                 <li key={link.name}>
@@ -83,8 +111,8 @@ export default function Footer() {
           </div>
 
           {/* Company */}
-          <div>
-            <h3 className="font-semibold mb-4">Company</h3>
+          <div className="footer-col">
+            <h3 className="mb-4 font-semibold">Company</h3>
             <ul className="space-y-2">
               {footerLinks.company.map((link) => (
                 <li key={link.name}>
@@ -100,8 +128,8 @@ export default function Footer() {
           </div>
 
           {/* Support */}
-          <div>
-            <h3 className="font-semibold mb-4">Support</h3>
+          <div className="footer-col">
+            <h3 className="mb-4 font-semibold">Support</h3>
             <ul className="space-y-2">
               {footerLinks.support.map((link) => (
                 <li key={link.name}>
@@ -118,7 +146,7 @@ export default function Footer() {
         </div>
 
         {/* Newsletter */}
-        <div className="border-t border-border pt-8 mb-8">
+        <div className="footer-col mb-8 border-t border-border pt-8">
           <div className="max-w-md">
             <h3 className="font-semibold mb-2">Subscribe to our newsletter</h3>
             <p className="text-sm text-muted-foreground mb-4">

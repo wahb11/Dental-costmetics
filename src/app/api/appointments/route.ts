@@ -8,7 +8,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { createCalendarEvent, isCalendarEnabled } from '@/lib/google-calendar';
-import { sendAppointmentConfirmation, isEmailEnabled } from '@/lib/email';
+import { sendBookingEmails, isEmailEnabled } from '@/lib/email';
 
 export async function GET(request: NextRequest) {
   try {
@@ -223,29 +223,31 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Send confirmation email if enabled
+    // Send confirmation emails to patient AND doctor
     if (isEmailEnabled()) {
       try {
-        await sendAppointmentConfirmation({
+        const emails = await sendBookingEmails({
           patientName: `${patient.firstName} ${patient.lastName}`,
           patientEmail: patient.user.email,
+          patientPhone: patient.phone,
           doctorName: `Dr. ${doctor.firstName} ${doctor.lastName}`,
+          doctorEmail: doctor.user.email,
           serviceName: service.name,
           date: appointmentDate,
           startTime,
-          location: process.env.NEXT_PUBLIC_APP_NAME || 'SmileSync Dental Clinic',
+          notes: notes || undefined,
         });
 
-        // Update confirmation sent status
-        await prisma.appointment.update({
-          where: { id: appointment.id },
-          data: { confirmationSent: true },
-        });
+        if (emails.patientSent || emails.doctorSent) {
+          await prisma.appointment.update({
+            where: { id: appointment.id },
+            data: { confirmationSent: true },
+          });
+        }
 
-        console.log('Confirmation email sent to:', patient.user.email);
+        console.log('Confirmation emails:', emails);
       } catch (error) {
         console.error('Failed to send confirmation email:', error);
-        // Continue without email - don't fail the appointment
       }
     }
 

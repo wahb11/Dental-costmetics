@@ -1,14 +1,32 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Syne, DM_Sans } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
 
-const inter = Inter({ subsets: ["latin"] });
+const display = Syne({
+  subsets: ["latin"],
+  variable: "--font-display",
+  weight: ["500", "600", "700", "800"],
+});
+
+const body = DM_Sans({
+  subsets: ["latin"],
+  variable: "--font-body",
+  weight: ["400", "500", "600", "700"],
+});
 
 export const metadata: Metadata = {
   title: "SmileSync - Modern Dental Care Management",
-  description: "Connecting Patients. Simplifying Care. Professional dental clinic management system with advanced booking and patient care.",
-  keywords: ["dental clinic", "dentist", "appointments", "dental care", "orthodontics", "cosmetic dentistry"],
+  description:
+    "Connecting Patients. Simplifying Care. Professional dental clinic management system with advanced booking and patient care.",
+  keywords: [
+    "dental clinic",
+    "dentist",
+    "appointments",
+    "dental care",
+    "orthodontics",
+    "cosmetic dentistry",
+  ],
   authors: [{ name: "SmileSync" }],
   openGraph: {
     type: "website",
@@ -36,7 +54,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} antialiased`} suppressHydrationWarning>
+      <body
+        className={`${body.variable} ${display.variable} ${body.className} antialiased`}
+        suppressHydrationWarning
+      >
         <Providers>{children}</Providers>
       </body>
     </html>

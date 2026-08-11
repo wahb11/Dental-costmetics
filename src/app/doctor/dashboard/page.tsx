@@ -3,6 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/layout/Navbar";
+import PageMotion from "@/components/motion/PageMotion";
 import {
   Calendar,
   Users,
@@ -114,21 +115,21 @@ const tasks = [
 
 export default function DoctorDashboard() {
   return (
-    <>
+    <PageMotion>
       <Navbar />
-      
+
       <div className="min-h-screen pt-24 pb-12 bg-secondary/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
-          <div className="mb-8">
+          <div className="reveal mb-8">
             <h1 className="text-4xl font-bold mb-2">Doctor Dashboard</h1>
             <p className="text-muted-foreground">Welcome back, Dr. Sarah Johnson</p>
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="reveal-stagger grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {stats.map((stat, index) => (
-              <Card key={index}>
+              <Card key={index} className="reveal-item">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-4">
                     <div className={`w-12 h-12 ${stat.bgColor} rounded-lg flex items-center justify-center`}>
@@ -142,14 +143,14 @@ export default function DoctorDashboard() {
             ))}
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="reveal-stagger grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Main Content */}
-            <div className="lg:col-span-2 space-y-6">
+            <div className="reveal-item lg:col-span-2 space-y-6">
               {/* Today's Schedule */}
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
-                    <span>Today's Schedule</span>
+                    <span>Today&apos;s Schedule</span>
                     <span className="text-sm font-normal text-muted-foreground">
                       July 24, 2026
                     </span>
@@ -233,12 +234,12 @@ export default function DoctorDashboard() {
             </div>
 
             {/* Sidebar */}
-            <div className="space-y-6">
+            <div className="reveal-item space-y-6">
               {/* Tasks */}
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
-                    <span>Today's Tasks</span>
+                    <span>Today&apos;s Tasks</span>
                     <Button variant="ghost" size="sm">+ Add</Button>
                   </CardTitle>
                 </CardHeader>
@@ -332,6 +333,6 @@ export default function DoctorDashboard() {
           </div>
         </div>
       </div>
-    </>
+    </PageMotion>
   );
 }

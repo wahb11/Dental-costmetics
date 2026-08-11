@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import PageMotion from "@/components/motion/PageMotion";
 import {
   Calendar,
   FileText,
@@ -97,20 +98,20 @@ const notifications = [
 
 export default function PatientDashboard() {
   return (
-    <>
+    <PageMotion>
       <Navbar />
-      
+
       <div className="min-h-screen pt-24 pb-12 bg-secondary/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
-          <div className="mb-8">
+          <div className="reveal mb-8">
             <h1 className="text-4xl font-bold mb-2">Patient Dashboard</h1>
-            <p className="text-muted-foreground">Welcome back! Here's your health overview.</p>
+            <p className="text-muted-foreground">Welcome back! Here&apos;s your health overview.</p>
           </div>
 
           {/* Quick Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <Card>
+          <div className="reveal-stagger grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <Card className="reveal-item">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -122,7 +123,7 @@ export default function PatientDashboard() {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="reveal-item">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -134,7 +135,7 @@ export default function PatientDashboard() {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="reveal-item">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -146,7 +147,7 @@ export default function PatientDashboard() {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="reveal-item">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -159,9 +160,9 @@ export default function PatientDashboard() {
             </Card>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="reveal-stagger grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Main Content */}
-            <div className="lg:col-span-2 space-y-6">
+            <div className="reveal-item lg:col-span-2 space-y-6">
               {/* Upcoming Appointments */}
               <Card>
                 <CardHeader>
@@ -290,7 +291,7 @@ export default function PatientDashboard() {
             </div>
 
             {/* Sidebar */}
-            <div className="space-y-6">
+            <div className="reveal-item space-y-6">
               {/* Notifications */}
               <Card>
                 <CardHeader>
@@ -392,6 +393,6 @@ export default function PatientDashboard() {
       </div>
 
       <Footer />
-    </>
+    </PageMotion>
   );
 }

@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import PageMotion from "@/components/motion/PageMotion";
 import { ArrowRight, Clock, DollarSign } from "lucide-react";
 
 const services = [
@@ -108,26 +109,30 @@ const services = [
 
 export default function ServicesPage() {
   return (
-    <>
+    <PageMotion>
       <Navbar />
 
-      <section className="bg-gradient-to-br from-primary/10 to-accent/10 pb-16 pt-32">
+      <section className="page-hero bg-gradient-to-br from-primary/10 to-accent/10 pb-16 pt-32">
         <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-          <h1 className="mb-6 text-5xl font-bold md:text-6xl">
+          <h1 className="hero-anim mb-6 text-5xl font-bold md:text-6xl">
             Our <span className="gradient-text">Services</span>
           </h1>
-          <p className="mx-auto max-w-3xl text-xl text-muted-foreground">
+          <p className="hero-anim mx-auto max-w-3xl text-xl text-muted-foreground">
             Comprehensive dental care tailored to your unique needs. From
             routine checkups to advanced procedures, we&apos;re here for you.
           </p>
         </div>
       </section>
 
-      <section className="py-16 md:py-20">
+      <section className="anim-section py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="reveal-stagger grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {services.map((service) => (
-              <Link key={service.id} href={`/services/${service.id}`}>
+              <Link
+                key={service.id}
+                href={`/services/${service.id}`}
+                className="reveal-item"
+              >
                 <Card className="group h-full cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-premium">
                   <CardHeader>
                     <div
@@ -166,8 +171,8 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <section className="bg-secondary/30 py-16 md:py-20">
-        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+      <section className="anim-section bg-secondary/30 py-16 md:py-20">
+        <div className="reveal-scale mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
           <h2 className="mb-4 text-4xl font-bold">
             Not Sure Which Service You Need?
           </h2>
@@ -185,6 +190,6 @@ export default function ServicesPage() {
       </section>
 
       <Footer />
-    </>
+    </PageMotion>
   );
 }

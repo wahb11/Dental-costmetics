@@ -1,11 +1,11 @@
+import { UserRole } from "@prisma/client";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma) as any,
+  // Credentials + JWT only. PrismaAdapter needs Account/Session models we don't have.
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -22,13 +22,9 @@ export const authOptions: NextAuthOptions = {
           where: {
             email: credentials.email,
           },
-          include: {
-            patient: true,
-            doctor: true,
-          },
         });
 
-        if (!user || !user.password) {
+        if (!user?.password) {
           throw new Error("Invalid credentials");
         }
 
@@ -45,7 +41,7 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           email: user.email,
           role: user.role,
-          image: user.image,
+          image: user.image ?? undefined,
         };
       },
     }),
@@ -54,14 +50,14 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.role = user.role;
+        token.role = (user.role ?? UserRole.PATIENT) as UserRole;
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string;
-        session.user.role = token.role as string;
+        session.user.role = token.role as UserRole;
       }
       return session;
     },

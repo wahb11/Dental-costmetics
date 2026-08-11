@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import PageMotion from "@/components/motion/PageMotion";
 import {
   Phone,
   Mail,
@@ -72,17 +74,17 @@ export default function ContactPage() {
   };
 
   return (
-    <>
+    <PageMotion>
       <Navbar />
-      
+
       {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-gradient-to-br from-primary/10 to-accent/10">
+      <section className="page-hero pt-32 pb-16 bg-gradient-to-br from-primary/10 to-accent/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">
+          <h1 className="hero-anim text-5xl md:text-6xl font-bold mb-6">
             Get in <span className="gradient-text">Touch</span>
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+          <p className="hero-anim text-xl text-muted-foreground max-w-3xl mx-auto">
+            Have questions? We&apos;d love to hear from you. Send us a message and we&apos;ll respond as soon as possible.
           </p>
         </div>
       </section>
@@ -90,9 +92,9 @@ export default function ContactPage() {
       {/* Contact Info Cards */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+          <div className="reveal-stagger grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
             {contactInfo.map((info, index) => (
-              <Card key={index} className="text-center shadow-lg">
+              <Card key={index} className="reveal-item text-center shadow-lg">
                 <CardContent className="p-6">
                   <div className={`w-16 h-16 ${info.bgColor} rounded-full flex items-center justify-center mx-auto mb-4`}>
                     <info.icon className={`w-8 h-8 ${info.color}`} />
@@ -110,7 +112,7 @@ export default function ContactPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Form */}
-            <div>
+            <div className="reveal-left">
               <Card className="shadow-premium">
                 <CardHeader>
                   <CardTitle className="text-3xl flex items-center">
@@ -190,7 +192,7 @@ export default function ContactPage() {
             </div>
 
             {/* Departments & Map */}
-            <div className="space-y-6">
+            <div className="reveal-right space-y-6">
               {/* Departments */}
               <Card className="shadow-lg">
                 <CardHeader>
@@ -251,9 +253,11 @@ export default function ContactPage() {
                   <p className="mb-4 opacity-90">
                     Book online in just a few clicks
                   </p>
-                  <Button variant="secondary" size="lg" className="w-full">
-                    Book Now
-                  </Button>
+                  <Link href="/appointments/book">
+                    <Button variant="secondary" size="lg" className="w-full">
+                      Book Now
+                    </Button>
+                  </Link>
                 </CardContent>
               </Card>
             </div>
@@ -262,7 +266,7 @@ export default function ContactPage() {
       </section>
 
       {/* Emergency Contact */}
-      <section className="py-20 bg-red-500/10">
+      <section className="anim-section reveal-scale py-20 bg-red-500/10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-red-500 text-white rounded-full mb-4">
             <Phone className="w-8 h-8" />
@@ -281,6 +285,6 @@ export default function ContactPage() {
       </section>
 
       <Footer />
-    </>
+    </PageMotion>
   );
 }

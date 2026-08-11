@@ -16,9 +16,10 @@ import { sendAppointmentCancellation, isEmailEnabled } from '@/lib/email';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const session = await getServerSession(authOptions);
 
     if (!session) {
@@ -26,7 +27,7 @@ export async function GET(
     }
 
     const appointment = await prisma.appointment.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         patient: {
           select: {
@@ -84,9 +85,10 @@ export async function GET(
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const session = await getServerSession(authOptions);
 
     if (!session) {
@@ -98,7 +100,7 @@ export async function PATCH(
 
     // Get existing appointment
     const existingAppointment = await prisma.appointment.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         patient: {
           include: {
@@ -145,7 +147,7 @@ export async function PATCH(
 
       // Update appointment
       const updatedAppointment = await prisma.appointment.update({
-        where: { id: params.id },
+        where: { id: id },
         data: {
           status: 'CANCELLED',
           cancellationNote,
@@ -201,7 +203,7 @@ export async function PATCH(
       // Check for conflicts
       const conflictingAppointment = await prisma.appointment.findFirst({
         where: {
-          id: { not: params.id },
+          id: { not: id },
           doctorId: existingAppointment.doctorId,
           date: newDate,
           startTime: newStartTime,
@@ -248,7 +250,7 @@ export async function PATCH(
 
     // Update appointment
     const updatedAppointment = await prisma.appointment.update({
-      where: { id: params.id },
+      where: { id: id },
       data: {
         ...(status && { status }),
         ...(date && { date: new Date(date) }),
@@ -292,9 +294,10 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const session = await getServerSession(authOptions);
 
     if (!session || session.user.role !== 'ADMIN') {
@@ -303,7 +306,7 @@ export async function DELETE(
 
     // Get appointment
     const appointment = await prisma.appointment.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!appointment) {
@@ -324,7 +327,7 @@ export async function DELETE(
 
     // Delete appointment
     await prisma.appointment.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
     return NextResponse.json({

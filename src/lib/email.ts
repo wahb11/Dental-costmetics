@@ -1,12 +1,11 @@
 /**
- * Email Service
- * Handles sending emails via SMTP (Gmail) or alternative services
+ * Email Service — SMTP (your Gmail / personal email)
+ * Sends booking confirmations + reminders to patients AND doctors.
  */
 
-import nodemailer from 'nodemailer';
-import type { Transporter } from 'nodemailer';
+import nodemailer from "nodemailer";
+import type { Transporter } from "nodemailer";
 
-// Email templates
 export interface EmailTemplate {
   to: string | string[];
   subject: string;
@@ -14,20 +13,19 @@ export interface EmailTemplate {
   text?: string;
 }
 
-// Create SMTP transporter
 let transporter: Transporter | null = null;
 
 const getTransporter = (): Transporter => {
   if (transporter) return transporter;
 
   if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASSWORD) {
-    throw new Error('SMTP credentials not configured');
+    throw new Error("SMTP credentials not configured");
   }
 
   transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
-    port: parseInt(process.env.SMTP_PORT || '587'),
-    secure: process.env.SMTP_PORT === '465', // true for 465, false for other ports
+    port: parseInt(process.env.SMTP_PORT || "587", 10),
+    secure: process.env.SMTP_PORT === "465",
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASSWORD,
@@ -37,40 +35,253 @@ const getTransporter = (): Transporter => {
   return transporter;
 };
 
-/**
- * Send email
- */
+export function isEmailEnabled(): boolean {
+  return (
+    process.env.ENABLE_EMAIL_NOTIFICATIONS === "true" &&
+    !!process.env.SMTP_HOST &&
+    !!process.env.SMTP_USER &&
+    !!process.env.SMTP_PASSWORD
+  );
+}
+
 export async function sendEmail(options: EmailTemplate): Promise<boolean> {
   try {
-    if (process.env.ENABLE_EMAIL_NOTIFICATIONS !== 'true') {
-      console.log('Email notifications disabled');
+    if (!isEmailEnabled()) {
+      console.log("[email] skipped (ENABLE_EMAIL_NOTIFICATIONS or SMTP not set)");
       return false;
     }
 
-    const transporter = getTransporter();
-
-    await transporter.sendMail({
-      from: process.env.EMAIL_FROM || 'noreply@smilesync.com',
+    const mailer = getTransporter();
+    await mailer.sendMail({
+      from: process.env.EMAIL_FROM || process.env.SMTP_USER,
       to: options.to,
       subject: options.subject,
       html: options.html,
-      text: options.text || options.html.replace(/<[^>]*>/g, ''), // Strip HTML for text version
-      replyTo: process.env.EMAIL_REPLY_TO,
+      text: options.text || options.html.replace(/<[^>]*>/g, ""),
+      replyTo: process.env.EMAIL_REPLY_TO || process.env.SMTP_USER,
     });
 
-    console.log('Email sent successfully to:', options.to);
+    console.log("[email] sent to:", options.to);
     return true;
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error("[email] send failed:", error);
     return false;
   }
 }
 
-// Email Templates
+function formatDate(date: Date | string) {
+  const isDateOnly = typeof date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(date);
+  const value = isDateOnly
+    ? new Date(`${date}T00:00:00Z`)
+    : date instanceof Date
+      ? date
+      : new Date(date);
 
-/**
- * Appointment Confirmation Email
- */
+  return value.toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    // A database `date` is a calendar date, not a moment in time. Formatting
+    // it in UTC prevents timezone conversion from moving it to the prior day.
+    timeZone: isDateOnly
+      ? "UTC"
+      : process.env.NEXT_PUBLIC_TIMEZONE || "America/New_York",
+  });
+}
+
+function clinicName() {
+  return process.env.NEXT_PUBLIC_APP_NAME || "SmileSync Dental Clinic";
+}
+
+function clinicAddress() {
+  return process.env.CLINIC_ADDRESS || "Our clinic";
+}
+
+function supportEmail() {
+  return process.env.NEXT_PUBLIC_SUPPORT_EMAIL || process.env.SMTP_USER || "support@smilesync.com";
+}
+
+function baseLayout(opts: {
+  title: string;
+  headerColor: string;
+  body: string;
+  footerNote?: string;
+}) {
+  return `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; line-height: 1.6; color: #1e293b; margin: 0; background: #f1f5f9; }
+    .container { max-width: 600px; margin: 24px auto; padding: 0 16px; }
+    .header { background: ${opts.headerColor}; color: white; padding: 28px 24px; text-align: center; border-radius: 12px 12px 0 0; }
+    .content { background: #fff; padding: 28px 24px; border-radius: 0 0 12px 12px; }
+    .box { background: #f8fafc; padding: 16px 18px; border-radius: 8px; margin: 18px 0; border-left: 4px solid #0284c7; }
+    .row { padding: 8px 0; border-bottom: 1px solid #e2e8f0; }
+    .label { font-weight: 700; color: #0369a1; display: inline-block; min-width: 90px; }
+    .footer { text-align: center; padding: 16px; color: #64748b; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header"><h1 style="margin:0;font-size:22px;">${opts.title}</h1></div>
+    <div class="content">${opts.body}</div>
+    <div class="footer">
+      <p>&copy; ${new Date().getFullYear()} ${clinicName()}. All rights reserved.</p>
+      ${opts.footerNote ? `<p>${opts.footerNote}</p>` : ""}
+    </div>
+  </div>
+</body>
+</html>`;
+}
+
+function detailsBox(rows: Array<[string, string]>) {
+  return `<div class="box">${rows
+    .map(
+      ([label, value]) =>
+        `<div class="row"><span class="label">${label}</span> ${value}</div>`
+    )
+    .join("")}</div>`;
+}
+
+export type AppointmentEmailData = {
+  patientName: string;
+  patientEmail: string;
+  patientPhone?: string;
+  doctorName: string;
+  doctorEmail: string;
+  serviceName: string;
+  date: Date | string;
+  startTime: string;
+  notes?: string;
+};
+
+/** Confirmation to patient + doctor after booking */
+export async function sendBookingEmails(data: AppointmentEmailData) {
+  const when = formatDate(data.date);
+  const location = clinicAddress();
+
+  const patientHtml = baseLayout({
+    title: "🦷 Appointment Confirmed",
+    headerColor: "linear-gradient(135deg,#0369a1,#0ea5e9)",
+    footerNote: `Sent to ${data.patientEmail}`,
+    body: `
+      <p>Hi ${data.patientName},</p>
+      <p>Your appointment at <strong>${clinicName()}</strong> is confirmed.</p>
+      ${detailsBox([
+        ["Date", when],
+        ["Time", data.startTime],
+        ["Doctor", data.doctorName],
+        ["Service", data.serviceName],
+        ["Location", location],
+      ])}
+      <p><strong>Please remember:</strong></p>
+      <ul>
+        <li>Arrive 10 minutes early</li>
+        <li>Bring your ID and insurance card</li>
+        <li>Reply to this email or call us to reschedule (24h notice preferred)</li>
+      </ul>
+      <p>Questions? Contact us at ${supportEmail()}</p>
+      <p>See you soon,<br/><strong>${clinicName()}</strong></p>
+    `,
+  });
+
+  const doctorHtml = baseLayout({
+    title: "📋 New Appointment Booked",
+    headerColor: "linear-gradient(135deg,#0f766e,#14b8a6)",
+    footerNote: `Sent to ${data.doctorEmail}`,
+    body: `
+      <p>Hi ${data.doctorName},</p>
+      <p>A new appointment has been booked with you.</p>
+      ${detailsBox([
+        ["Patient", data.patientName],
+        ["Email", data.patientEmail],
+        ["Phone", data.patientPhone || "—"],
+        ["Date", when],
+        ["Time", data.startTime],
+        ["Service", data.serviceName],
+        ["Notes", data.notes || "—"],
+      ])}
+      <p>Please review your schedule and prepare accordingly.</p>
+      <p>— ${clinicName()}</p>
+    `,
+  });
+
+  const [patientSent, doctorSent] = await Promise.all([
+    sendEmail({
+      to: data.patientEmail,
+      subject: `Appointment Confirmed — ${when} at ${data.startTime}`,
+      html: patientHtml,
+    }),
+    sendEmail({
+      to: data.doctorEmail,
+      subject: `New Booking — ${data.patientName} on ${when} at ${data.startTime}`,
+      html: doctorHtml,
+    }),
+  ]);
+
+  return { patientSent, doctorSent };
+}
+
+/** Reminder to patient + doctor (e.g. 24h before) */
+export async function sendReminderEmails(data: AppointmentEmailData) {
+  const when = formatDate(data.date);
+  const location = clinicAddress();
+
+  const patientHtml = baseLayout({
+    title: "⏰ Appointment Reminder",
+    headerColor: "linear-gradient(135deg,#c2410c,#f97316)",
+    body: `
+      <p>Hi ${data.patientName},</p>
+      <p>This is a friendly reminder about your upcoming appointment.</p>
+      ${detailsBox([
+        ["Date", when],
+        ["Time", data.startTime],
+        ["Doctor", data.doctorName],
+        ["Service", data.serviceName],
+        ["Location", location],
+      ])}
+      <p>If you need to reschedule, reply to this email or contact ${supportEmail()}.</p>
+      <p>— ${clinicName()}</p>
+    `,
+  });
+
+  const doctorHtml = baseLayout({
+    title: "⏰ Upcoming Appointment Reminder",
+    headerColor: "linear-gradient(135deg,#7c2d12,#ea580c)",
+    body: `
+      <p>Hi ${data.doctorName},</p>
+      <p>Reminder: you have an appointment coming up.</p>
+      ${detailsBox([
+        ["Patient", data.patientName],
+        ["Email", data.patientEmail],
+        ["Phone", data.patientPhone || "—"],
+        ["Date", when],
+        ["Time", data.startTime],
+        ["Service", data.serviceName],
+      ])}
+      <p>— ${clinicName()}</p>
+    `,
+  });
+
+  const [patientSent, doctorSent] = await Promise.all([
+    sendEmail({
+      to: data.patientEmail,
+      subject: `Reminder: Appointment ${when} at ${data.startTime}`,
+      html: patientHtml,
+    }),
+    sendEmail({
+      to: data.doctorEmail,
+      subject: `Reminder: ${data.patientName} — ${when} at ${data.startTime}`,
+      html: doctorHtml,
+    }),
+  ]);
+
+  return { patientSent, doctorSent };
+}
+
+/** @deprecated use sendBookingEmails — kept for older API routes */
 export async function sendAppointmentConfirmation(data: {
   patientName: string;
   patientEmail: string;
@@ -79,93 +290,37 @@ export async function sendAppointmentConfirmation(data: {
   date: Date;
   startTime: string;
   location: string;
+  doctorEmail?: string;
+  patientPhone?: string;
+  notes?: string;
 }) {
-  const formattedDate = data.date.toLocaleDateString('en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  if (data.doctorEmail) {
+    const result = await sendBookingEmails({
+      patientName: data.patientName,
+      patientEmail: data.patientEmail,
+      patientPhone: data.patientPhone,
+      doctorName: data.doctorName,
+      doctorEmail: data.doctorEmail,
+      serviceName: data.serviceName,
+      date: data.date,
+      startTime: data.startTime,
+      notes: data.notes,
+    });
+    return result.patientSent;
+  }
 
-  const html = `
-<!DOCTYPE html>
-<html>
-<head>
-  <style>
-    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-    .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
-    .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
-    .appointment-details { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #667eea; }
-    .detail-row { padding: 10px 0; border-bottom: 1px solid #eee; }
-    .detail-label { font-weight: bold; color: #667eea; }
-    .button { display: inline-block; padding: 12px 30px; background: #667eea; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0; }
-    .footer { text-align: center; padding: 20px; color: #666; font-size: 12px; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <h1>🦷 Appointment Confirmed!</h1>
-    </div>
-    <div class="content">
-      <p>Dear ${data.patientName},</p>
-      <p>Your appointment at <strong>${process.env.NEXT_PUBLIC_APP_NAME || 'SmileSync Dental Clinic'}</strong> has been confirmed.</p>
-      
-      <div class="appointment-details">
-        <h3>Appointment Details</h3>
-        <div class="detail-row">
-          <span class="detail-label">Date:</span> ${formattedDate}
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">Time:</span> ${data.startTime}
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">Doctor:</span> ${data.doctorName}
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">Service:</span> ${data.serviceName}
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">Location:</span> ${data.location}
-        </div>
-      </div>
-
-      <p><strong>Important Reminders:</strong></p>
-      <ul>
-        <li>Please arrive 10 minutes before your scheduled time</li>
-        <li>Bring your insurance card and valid ID</li>
-        <li>If you need to reschedule, please contact us at least 24 hours in advance</li>
-      </ul>
-
-      <center>
-        <a href="${process.env.NEXT_PUBLIC_APP_URL}/patient/dashboard" class="button">View in Dashboard</a>
-      </center>
-
-      <p>If you have any questions, feel free to contact us at ${process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@smilesync.com'}</p>
-      
-      <p>Looking forward to seeing you!<br>
-      <strong>The SmileSync Team</strong></p>
-    </div>
-    <div class="footer">
-      <p>&copy; ${new Date().getFullYear()} ${process.env.NEXT_PUBLIC_APP_NAME || 'SmileSync'}. All rights reserved.</p>
-      <p>This email was sent to ${data.patientEmail}</p>
-    </div>
-  </div>
-</body>
-</html>
-  `;
-
-  return await sendEmail({
+  return sendEmail({
     to: data.patientEmail,
-    subject: `Appointment Confirmed - ${formattedDate} at ${data.startTime}`,
-    html,
+    subject: `Appointment Confirmed - ${formatDate(data.date)} at ${data.startTime}`,
+    html: baseLayout({
+      title: "🦷 Appointment Confirmed",
+      headerColor: "#0284c7",
+      body: `<p>Hi ${data.patientName},</p><p>Your appointment with ${data.doctorName} for ${data.serviceName} is confirmed on ${formatDate(data.date)} at ${data.startTime}.</p>`,
+    }),
   });
 }
 
-/**
- * Appointment Reminder Email
- */
+/** @deprecated use sendReminderEmails */
 export async function sendAppointmentReminder(data: {
   patientName: string;
   patientEmail: string;
@@ -174,96 +329,28 @@ export async function sendAppointmentReminder(data: {
   date: Date;
   startTime: string;
   location: string;
+  doctorEmail?: string;
+  patientPhone?: string;
 }) {
-  const formattedDate = data.date.toLocaleDateString('en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  if (data.doctorEmail) {
+    const result = await sendReminderEmails({
+      ...data,
+      doctorEmail: data.doctorEmail,
+    });
+    return result.patientSent;
+  }
 
-  const html = `
-<!DOCTYPE html>
-<html>
-<head>
-  <style>
-    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-    .header { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
-    .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
-    .reminder-box { background: #fff3cd; border: 2px solid #ffc107; padding: 20px; border-radius: 8px; margin: 20px 0; }
-    .appointment-details { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; }
-    .detail-row { padding: 10px 0; border-bottom: 1px solid #eee; }
-    .detail-label { font-weight: bold; color: #f5576c; }
-    .button { display: inline-block; padding: 12px 30px; background: #f5576c; color: white; text-decoration: none; border-radius: 5px; margin: 10px 5px; }
-    .footer { text-align: center; padding: 20px; color: #666; font-size: 12px; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <h1>⏰ Appointment Reminder</h1>
-    </div>
-    <div class="content">
-      <div class="reminder-box">
-        <h3 style="margin-top:0;">📅 Your appointment is coming up!</h3>
-        <p style="margin-bottom:0;">This is a friendly reminder about your upcoming appointment.</p>
-      </div>
-
-      <p>Dear ${data.patientName},</p>
-      
-      <div class="appointment-details">
-        <h3>Appointment Details</h3>
-        <div class="detail-row">
-          <span class="detail-label">Date:</span> ${formattedDate}
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">Time:</span> ${data.startTime}
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">Doctor:</span> ${data.doctorName}
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">Service:</span> ${data.serviceName}
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">Location:</span> ${data.location}
-        </div>
-      </div>
-
-      <p><strong>Before Your Visit:</strong></p>
-      <ul>
-        <li>Complete any pre-appointment forms in your patient portal</li>
-        <li>Prepare a list of any medications you're currently taking</li>
-        <li>Note any concerns or questions you'd like to discuss</li>
-      </ul>
-
-      <center>
-        <a href="${process.env.NEXT_PUBLIC_APP_URL}/patient/dashboard" class="button">Confirm Appointment</a>
-        <a href="${process.env.NEXT_PUBLIC_APP_URL}/appointments/reschedule" class="button" style="background:#6c757d;">Reschedule</a>
-      </center>
-
-      <p>See you soon!<br>
-      <strong>The SmileSync Team</strong></p>
-    </div>
-    <div class="footer">
-      <p>&copy; ${new Date().getFullYear()} ${process.env.NEXT_PUBLIC_APP_NAME || 'SmileSync'}. All rights reserved.</p>
-    </div>
-  </div>
-</body>
-</html>
-  `;
-
-  return await sendEmail({
+  return sendEmail({
     to: data.patientEmail,
-    subject: `Reminder: Upcoming Appointment - ${formattedDate} at ${data.startTime}`,
-    html,
+    subject: `Reminder: Upcoming Appointment - ${formatDate(data.date)} at ${data.startTime}`,
+    html: baseLayout({
+      title: "⏰ Reminder",
+      headerColor: "#ea580c",
+      body: `<p>Hi ${data.patientName}, reminder for ${formatDate(data.date)} at ${data.startTime} with ${data.doctorName}.</p>`,
+    }),
   });
 }
 
-/**
- * Appointment Cancellation Email
- */
 export async function sendAppointmentCancellation(data: {
   patientName: string;
   patientEmail: string;
@@ -272,145 +359,52 @@ export async function sendAppointmentCancellation(data: {
   date: Date;
   startTime: string;
   reason?: string;
+  doctorEmail?: string;
 }) {
-  const formattedDate = data.date.toLocaleDateString('en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
-
-  const html = `
-<!DOCTYPE html>
-<html>
-<head>
-  <style>
-    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-    .header { background: linear-gradient(135deg, #ff6b6b 0%, #c92a2a 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
-    .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
-    .cancellation-box { background: #fee; border: 2px solid #c92a2a; padding: 20px; border-radius: 8px; margin: 20px 0; }
-    .appointment-details { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; }
-    .button { display: inline-block; padding: 12px 30px; background: #667eea; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0; }
-    .footer { text-align: center; padding: 20px; color: #666; font-size: 12px; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <h1>❌ Appointment Cancelled</h1>
-    </div>
-    <div class="content">
-      <div class="cancellation-box">
-        <h3 style="margin-top:0; color:#c92a2a;">Your appointment has been cancelled</h3>
-        ${data.reason ? `<p><strong>Reason:</strong> ${data.reason}</p>` : ''}
-      </div>
-
-      <p>Dear ${data.patientName},</p>
-      <p>This is to confirm that your appointment has been cancelled.</p>
-      
-      <div class="appointment-details">
-        <h3>Cancelled Appointment</h3>
-        <p><strong>Date:</strong> ${formattedDate}</p>
-        <p><strong>Time:</strong> ${data.startTime}</p>
-        <p><strong>Doctor:</strong> ${data.doctorName}</p>
-        <p><strong>Service:</strong> ${data.serviceName}</p>
-      </div>
-
-      <p>We'd love to see you again! You can book a new appointment at your convenience.</p>
-
-      <center>
-        <a href="${process.env.NEXT_PUBLIC_APP_URL}/appointments/book" class="button">Book New Appointment</a>
-      </center>
-
-      <p>If you have any questions, please contact us at ${process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@smilesync.com'}</p>
-      
-      <p>Best regards,<br>
-      <strong>The SmileSync Team</strong></p>
-    </div>
-    <div class="footer">
-      <p>&copy; ${new Date().getFullYear()} ${process.env.NEXT_PUBLIC_APP_NAME || 'SmileSync'}. All rights reserved.</p>
-    </div>
-  </div>
-</body>
-</html>
-  `;
-
-  return await sendEmail({
+  const when = formatDate(data.date);
+  const patientSent = await sendEmail({
     to: data.patientEmail,
-    subject: `Appointment Cancelled - ${formattedDate} at ${data.startTime}`,
-    html,
+    subject: `Appointment Cancelled — ${when} at ${data.startTime}`,
+    html: baseLayout({
+      title: "❌ Appointment Cancelled",
+      headerColor: "#b91c1c",
+      body: `
+        <p>Hi ${data.patientName},</p>
+        <p>Your appointment has been cancelled.</p>
+        ${detailsBox([
+          ["Date", when],
+          ["Time", data.startTime],
+          ["Doctor", data.doctorName],
+          ["Service", data.serviceName],
+          ["Reason", data.reason || "—"],
+        ])}
+        <p><a href="${process.env.NEXT_PUBLIC_APP_URL}/appointments/book">Book a new appointment</a></p>
+      `,
+    }),
   });
-}
 
-/**
- * Welcome Email for New Patients
- */
-export async function sendWelcomeEmail(data: {
-  patientName: string;
-  patientEmail: string;
-}) {
-  const html = `
-<!DOCTYPE html>
-<html>
-<head>
-  <style>
-    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-    .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
-    .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
-    .button { display: inline-block; padding: 12px 30px; background: #667eea; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0; }
-    .footer { text-align: center; padding: 20px; color: #666; font-size: 12px; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <h1>🦷 Welcome to SmileSync!</h1>
-    </div>
-    <div class="content">
-      <p>Dear ${data.patientName},</p>
-      <p>Welcome to ${process.env.NEXT_PUBLIC_APP_NAME || 'SmileSync Dental Clinic'}! We're excited to have you as part of our dental family.</p>
-      
-      <p>Your account has been successfully created. You can now:</p>
-      <ul>
-        <li>📅 Book appointments online</li>
-        <li>📊 View your medical records</li>
-        <li>💊 Access prescriptions</li>
-        <li>💳 Manage payments and invoices</li>
-        <li>📧 Communicate with our team</li>
-      </ul>
+  let doctorSent = false;
+  if (data.doctorEmail) {
+    doctorSent = await sendEmail({
+      to: data.doctorEmail,
+      subject: `Cancelled — ${data.patientName} on ${when} at ${data.startTime}`,
+      html: baseLayout({
+        title: "❌ Appointment Cancelled",
+        headerColor: "#b91c1c",
+        body: `
+          <p>Hi ${data.doctorName},</p>
+          <p>The following appointment was cancelled:</p>
+          ${detailsBox([
+            ["Patient", data.patientName],
+            ["Date", when],
+            ["Time", data.startTime],
+            ["Service", data.serviceName],
+            ["Reason", data.reason || "—"],
+          ])}
+        `,
+      }),
+    });
+  }
 
-      <center>
-        <a href="${process.env.NEXT_PUBLIC_APP_URL}/patient/dashboard" class="button">Go to Dashboard</a>
-      </center>
-
-      <p>If you have any questions, our support team is here to help at ${process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@smilesync.com'}</p>
-      
-      <p>Best regards,<br>
-      <strong>The SmileSync Team</strong></p>
-    </div>
-    <div class="footer">
-      <p>&copy; ${new Date().getFullYear()} ${process.env.NEXT_PUBLIC_APP_NAME || 'SmileSync'}. All rights reserved.</p>
-    </div>
-  </div>
-</body>
-</html>
-  `;
-
-  return await sendEmail({
-    to: data.patientEmail,
-    subject: `Welcome to ${process.env.NEXT_PUBLIC_APP_NAME || 'SmileSync'}!`,
-    html,
-  });
-}
-
-/**
- * Check if email service is enabled
- */
-export function isEmailEnabled(): boolean {
-  return process.env.ENABLE_EMAIL_NOTIFICATIONS === 'true' &&
-    !!process.env.SMTP_HOST &&
-    !!process.env.SMTP_USER &&
-    !!process.env.SMTP_PASSWORD;
+  return patientSent || doctorSent;
 }

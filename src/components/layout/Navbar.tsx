@@ -38,36 +38,47 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const isHomeHero = pathname === "/" && !scrolled;
+
   return (
     <nav
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         scrolled
-          ? "bg-background/80 backdrop-blur-lg border-b border-border shadow-lg"
+          ? "border-b border-border bg-background/80 shadow-lg backdrop-blur-lg"
           : "bg-transparent"
       )}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-20 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
               <span className="text-2xl text-white">🦷</span>
             </div>
-            <span className="text-2xl font-bold gradient-text">SmileSync</span>
+            <span
+              className={cn(
+                "font-[family-name:var(--font-display)] text-2xl font-bold",
+                isHomeHero ? "text-white" : "gradient-text"
+              )}
+            >
+              SmileSync
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1">
+          <div className="hidden items-center space-x-1 md:flex">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
                 className={cn(
-                  "px-4 py-2 rounded-lg text-sm font-medium transition-all",
+                  "rounded-lg px-4 py-2 text-sm font-medium transition-all",
                   pathname === item.href
                     ? "bg-primary text-white"
-                    : "text-foreground hover:bg-accent"
+                    : isHomeHero
+                      ? "text-white/85 hover:bg-white/10 hover:text-white"
+                      : "text-foreground hover:bg-accent"
                 )}
               >
                 {item.name}
@@ -76,33 +87,46 @@ export default function Navbar() {
           </div>
 
           {/* Right Side Actions */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden items-center space-x-4 md:flex">
             <button
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="p-2 rounded-lg hover:bg-accent transition-colors"
+              className={cn(
+                "rounded-lg p-2 transition-colors",
+                isHomeHero ? "text-white hover:bg-white/10" : "hover:bg-accent"
+              )}
               suppressHydrationWarning
             >
               {mounted ? (
                 theme === "dark" ? (
-                  <Sun className="w-5 h-5" />
+                  <Sun className="h-5 w-5" />
                 ) : (
-                  <Moon className="w-5 h-5" />
+                  <Moon className="h-5 w-5" />
                 )
               ) : (
-                <div className="w-5 h-5" />
+                <div className="h-5 w-5" />
               )}
             </button>
 
             <Link href="tel:+1234567890">
-              <Button variant="ghost" size="sm">
-                <Phone className="w-4 h-4 mr-2" />
+              <Button
+                variant="ghost"
+                size="sm"
+                className={isHomeHero ? "text-white hover:bg-white/10 hover:text-white" : ""}
+              >
+                <Phone className="mr-2 h-4 w-4" />
                 Call Us
               </Button>
             </Link>
 
             <Link href="/appointments/book">
-              <Button size="sm" className="shadow-lg">
-                <Calendar className="w-4 h-4 mr-2" />
+              <Button
+                size="sm"
+                className={cn(
+                  "shadow-lg",
+                  isHomeHero && "bg-sky-400 text-[#031525] hover:bg-sky-300"
+                )}
+              >
+                <Calendar className="mr-2 h-4 w-4" />
                 Book Appointment
               </Button>
             </Link>
@@ -110,14 +134,13 @@ export default function Navbar() {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 rounded-lg hover:bg-accent"
+            className={cn(
+              "rounded-lg p-2 md:hidden",
+              isHomeHero ? "text-white hover:bg-white/10" : "hover:bg-accent"
+            )}
             onClick={() => setIsOpen(!isOpen)}
           >
-            {isOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
+            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
       </div>

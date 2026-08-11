@@ -1,0 +1,3 @@
+-- Deprecated: use supabase/schema.sql instead.
+-- Open schema.sql in Supabase SQL Editor and Run it.
+-- That script drops old tables and creates only `appointments`.

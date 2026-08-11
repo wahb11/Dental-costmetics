@@ -10,18 +10,21 @@ if (typeof window !== "undefined") {
 
 export const useGSAP = (
   callback: (context: gsap.Context) => void,
-  deps: any[] = []
+  deps: unknown[] = []
 ) => {
-  const contextRef = useRef<gsap.Context>();
+  const contextRef = useRef<gsap.Context | null>(null);
 
   useEffect(() => {
     contextRef.current = gsap.context(() => {
-      callback(contextRef.current!);
+      if (contextRef.current) {
+        callback(contextRef.current);
+      }
     });
 
     return () => {
       contextRef.current?.revert();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
 
   return contextRef;
