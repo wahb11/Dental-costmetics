@@ -659,7 +659,7 @@ export default function HomePage() {
                       <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
                     ))}
                   </div>
-                  <p className="mb-4 text-muted-foreground italic">"{testimonial.review}"</p>
+                  <p className="mb-4 text-muted-foreground italic">&ldquo;{testimonial.review}&rdquo;</p>
                   <p className="font-semibold">{testimonial.name}</p>
                   <p className="text-sm text-muted-foreground">Google Review</p>
                 </CardContent>

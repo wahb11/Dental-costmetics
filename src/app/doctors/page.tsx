@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -114,9 +115,11 @@ export default function DoctorsPage() {
                     <CardContent className="p-6">
                       <div className="mb-4 text-center">
                         <div className="mb-3 relative w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-primary shadow-lg">
-                          <img 
-                            src={doctor.image} 
+                          <Image
+                            src={doctor.image}
                             alt={doctor.name}
+                            width={128}
+                            height={128}
                             className="w-full h-full object-cover"
                           />
                         </div>
