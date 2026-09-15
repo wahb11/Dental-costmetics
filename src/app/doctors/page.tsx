@@ -8,103 +8,32 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import PageMotion from "@/components/motion/PageMotion";
 import Link from "next/link";
-import { Calendar, Star, Award, MapPin, Search } from "lucide-react";
+import { Calendar, Star, Award, MapPin, Search, Phone } from "lucide-react";
 
 const doctors = [
   {
     id: "1",
-    name: "Dr. Sarah Johnson",
-    image: "👩‍⚕️",
-    specialization: "General Dentistry & Implantology",
-    experience: 12,
-    rating: 4.9,
-    reviews: 256,
-    languages: ["English", "Spanish"],
-    education: "DDS, Harvard School of Dental Medicine",
-    certifications: ["Board Certified", "Invisalign Certified"],
-    bio: "Passionate about providing comprehensive dental care with a gentle touch.",
-    availableDays: ["Mon", "Wed", "Fri"],
-  },
-  {
-    id: "2",
-    name: "Dr. Michael Chen",
-    image: "👨‍⚕️",
-    specialization: "Orthodontics & Facial Orthopedics",
-    experience: 10,
-    rating: 4.8,
-    reviews: 189,
-    languages: ["English", "Mandarin"],
-    education: "DMD, University of Pennsylvania",
-    certifications: ["Board Certified Orthodontist"],
-    bio: "Expert in creating beautiful smiles through advanced orthodontic treatments.",
-    availableDays: ["Tue", "Thu", "Sat"],
-  },
-  {
-    id: "3",
-    name: "Dr. Emily Rodriguez",
-    image: "👩‍⚕️",
-    specialization: "Cosmetic & Aesthetic Dentistry",
-    experience: 8,
-    rating: 5.0,
-    reviews: 324,
-    languages: ["English", "Spanish", "French"],
-    education: "DDS, UCLA School of Dentistry",
-    certifications: ["Cosmetic Dentistry Certified", "Veneers Specialist"],
-    bio: "Dedicated to helping patients achieve their dream smile through cosmetic procedures.",
-    availableDays: ["Mon", "Tue", "Thu"],
-  },
-  {
-    id: "4",
-    name: "Dr. James Wilson",
-    image: "👨‍⚕️",
-    specialization: "Oral & Maxillofacial Surgery",
+    name: "Dr. Moazzam",
+    image: "/images/dr-moazzam.png",
+    specialization: "General & Cosmetic Dentistry, Root Canal Specialist",
     experience: 15,
     rating: 4.9,
-    reviews: 201,
-    languages: ["English"],
-    education: "DDS, MD, Columbia University",
-    certifications: ["Board Certified Oral Surgeon", "Dental Implant Specialist"],
-    bio: "Specializing in complex surgical procedures with minimally invasive techniques.",
-    availableDays: ["Mon", "Wed", "Fri"],
-  },
-  {
-    id: "5",
-    name: "Dr. Lisa Anderson",
-    image: "👩‍⚕️",
-    specialization: "Pediatric Dentistry",
-    experience: 9,
-    rating: 4.9,
-    reviews: 412,
-    languages: ["English", "Spanish"],
-    education: "DDS, Boston University",
-    certifications: ["Board Certified Pediatric Dentist"],
-    bio: "Creating positive dental experiences for children in a fun, caring environment.",
-    availableDays: ["Tue", "Wed", "Thu"],
-  },
-  {
-    id: "6",
-    name: "Dr. Robert Kim",
-    image: "👨‍⚕️",
-    specialization: "Endodontics & Root Canal Therapy",
-    experience: 11,
-    rating: 4.8,
-    reviews: 178,
-    languages: ["English", "Korean"],
-    education: "DDS, NYU College of Dentistry",
-    certifications: ["Board Certified Endodontist"],
-    bio: "Expert in saving teeth through advanced endodontic procedures.",
-    availableDays: ["Mon", "Tue", "Fri"],
+    reviews: 63,
+    languages: ["English", "Urdu"],
+    education: "BDS - Bachelor of Dental Surgery",
+    certifications: ["Root Canal Specialist", "Cosmetic Dentistry", "Dental Implants"],
+    bio: "Dr. Moazzam is a highly skilled and experienced dentist specializing in cosmetic dentistry and root canal treatments. With over 15 years of experience, he is known for his gentle approach, meticulous attention to detail, and commitment to providing the best treatment with the latest innovations. Patients consistently praise his professionalism, expertise, and the comfortable environment he creates.",
+    availableDays: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    clinicAddress: "Model town, bank square market, Block C Model Town, Lahore, 54700",
+    phone: "0302 3699996",
   },
 ];
 
 const specializations = [
   "All Specializations",
   "General Dentistry",
-  "Orthodontics",
   "Cosmetic Dentistry",
-  "Oral Surgery",
-  "Pediatric Dentistry",
-  "Endodontics",
+  "Root Canal Treatment",
 ];
 
 export default function DoctorsPage() {
@@ -128,13 +57,12 @@ export default function DoctorsPage() {
       <PageMotion deps={[filteredDoctors]}>
         <section className="page-hero bg-gradient-to-br from-primary/10 to-accent/10 pb-16 pt-32">
           <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-            <h1 className="hero-anim mb-6 text-5xl font-bold md:text-6xl">
-              Meet Our <span className="gradient-text">Expert Dentists</span>
-            </h1>
-            <p className="hero-anim mx-auto mb-8 max-w-3xl text-xl text-muted-foreground">
-              World-class dental professionals dedicated to your oral health and
-              beautiful smile
-            </p>
+          <h1 className="hero-anim mb-6 text-5xl font-bold md:text-6xl">
+            Meet <span className="gradient-text">Dr. Moazzam</span>
+          </h1>
+          <p className="hero-anim mx-auto mb-8 max-w-3xl text-xl text-muted-foreground">
+            Expert dental professional dedicated to your oral health and beautiful smile. Specializing in cosmetic dentistry and root canal treatments in Lahore.
+          </p>
 
             <div className="hero-anim mx-auto max-w-2xl">
               <div className="relative">
@@ -177,7 +105,7 @@ export default function DoctorsPage() {
                 </p>
               </div>
             ) : (
-              <div className="reveal-stagger grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+              <div className="reveal-stagger grid grid-cols-1 gap-6">
                 {filteredDoctors.map((doctor) => (
                   <Card
                     key={doctor.id}
@@ -185,7 +113,13 @@ export default function DoctorsPage() {
                   >
                     <CardContent className="p-6">
                       <div className="mb-4 text-center">
-                        <div className="mb-3 text-7xl">{doctor.image}</div>
+                        <div className="mb-3 relative w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-primary shadow-lg">
+                          <img 
+                            src={doctor.image} 
+                            alt={doctor.name}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
                         <h3 className="mb-1 text-2xl font-bold">{doctor.name}</h3>
                         <p className="mb-2 text-sm font-medium text-primary">
                           {doctor.specialization}
@@ -202,17 +136,29 @@ export default function DoctorsPage() {
 
                       <div className="mb-6 space-y-3">
                         <div className="flex items-start space-x-2">
-                          <Award className="mt-0.5 h-5 w-5 flex-shrink-0 text-primary" />
+                          <MapPin className="mt-0.5 h-5 w-5 flex-shrink-0 text-primary" />
                           <div>
-                            <p className="text-sm font-medium">Experience</p>
+                            <p className="text-sm font-medium">Clinic Location</p>
                             <p className="text-sm text-muted-foreground">
-                              {doctor.experience} years
+                              {doctor.clinicAddress}
                             </p>
                           </div>
                         </div>
 
                         <div className="flex items-start space-x-2">
-                          <MapPin className="mt-0.5 h-5 w-5 flex-shrink-0 text-primary" />
+                          <Phone className="mt-0.5 h-5 w-5 flex-shrink-0 text-primary" />
+                          <div>
+                            <p className="text-sm font-medium">Contact</p>
+                            <p className="text-sm text-muted-foreground">
+                              <a href={`tel:${doctor.phone}`} className="hover:text-primary transition-colors">
+                                {doctor.phone}
+                              </a>
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-start space-x-2">
+                          <Award className="mt-0.5 h-5 w-5 flex-shrink-0 text-primary" />
                           <div>
                             <p className="text-sm font-medium">Languages</p>
                             <p className="text-sm text-muted-foreground">

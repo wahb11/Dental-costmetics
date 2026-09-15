@@ -163,7 +163,7 @@ export async function sendBookingEmails(data: AppointmentEmailData) {
   const location = clinicAddress();
 
   const patientHtml = baseLayout({
-    title: "🦷 Appointment Confirmed",
+    title: "Appointment Confirmed",
     headerColor: "linear-gradient(135deg,#0369a1,#0ea5e9)",
     footerNote: `Sent to ${data.patientEmail}`,
     body: `
@@ -313,7 +313,7 @@ export async function sendAppointmentConfirmation(data: {
     to: data.patientEmail,
     subject: `Appointment Confirmed - ${formatDate(data.date)} at ${data.startTime}`,
     html: baseLayout({
-      title: "🦷 Appointment Confirmed",
+      title: "Appointment Confirmed",
       headerColor: "#0284c7",
       body: `<p>Hi ${data.patientName},</p><p>Your appointment with ${data.doctorName} for ${data.serviceName} is confirmed on ${formatDate(data.date)} at ${data.startTime}.</p>`,
     }),

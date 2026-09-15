@@ -23,38 +23,38 @@ const contactInfo = [
   {
     icon: Phone,
     title: "Phone",
-    details: ["+1 (555) 123-4567", "+1 (555) 987-6543"],
+    details: ["0302 3699996", "For appointments & emergencies"],
     color: "text-blue-600",
     bgColor: "bg-blue-500/10",
   },
   {
     icon: Mail,
     title: "Email",
-    details: ["contact@smilesync.com", "support@smilesync.com"],
+    details: ["info@dentalcosmetics.pk", "We'll respond within 24 hours"],
     color: "text-green-600",
     bgColor: "bg-green-500/10",
   },
   {
     icon: MapPin,
     title: "Address",
-    details: ["123 Dental Street", "Healthcare City, HC 12345"],
+    details: ["Model town, bank square market", "Block C Model Town, Lahore, 54700"],
     color: "text-purple-600",
     bgColor: "bg-purple-500/10",
   },
   {
     icon: Clock,
     title: "Working Hours",
-    details: ["Mon-Fri: 8:00 AM - 8:00 PM", "Sat-Sun: 9:00 AM - 5:00 PM"],
+    details: ["Mon-Sat: 5:00 PM - 9:00 PM", "Sunday: Closed"],
     color: "text-orange-600",
     bgColor: "bg-orange-500/10",
   },
 ];
 
 const departments = [
-  { name: "General Inquiries", email: "info@smilesync.com", phone: "+1 (555) 123-4567" },
-  { name: "Appointments", email: "appointments@smilesync.com", phone: "+1 (555) 123-4568" },
-  { name: "Emergency", email: "emergency@smilesync.com", phone: "+1 (555) 911-9111" },
-  { name: "Insurance", email: "insurance@smilesync.com", phone: "+1 (555) 123-4569" },
+  { name: "General Inquiries", email: "info@dentalcosmetics.pk", phone: "0302 3699996" },
+  { name: "Appointments", email: "appointments@dentalcosmetics.pk", phone: "0302 3699996" },
+  { name: "Emergency Care", email: "emergency@dentalcosmetics.pk", phone: "0302 3699996" },
+  { name: "Cosmetic Consultations", email: "cosmetic@dentalcosmetics.pk", phone: "0302 3699996" },
 ];
 
 export default function ContactPage() {
@@ -230,7 +230,7 @@ export default function ContactPage() {
                         Interactive map would go here
                       </p>
                       <p className="text-sm text-muted-foreground mt-1">
-                        123 Dental Street, Healthcare City
+                        Model town, bank square market, Block C Model Town, Lahore
                       </p>
                     </div>
                   </div>
@@ -271,16 +271,19 @@ export default function ContactPage() {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-red-500 text-white rounded-full mb-4">
             <Phone className="w-8 h-8" />
           </div>
-          <h2 className="text-3xl font-bold mb-4">24/7 Emergency Contact</h2>
+          <h2 className="text-3xl font-bold mb-4">Emergency Dental Care</h2>
           <p className="text-xl text-muted-foreground mb-6">
-            For dental emergencies, call us immediately
+            For dental emergencies, call us during working hours
           </p>
-          <a href="tel:+15559119111">
+          <a href="tel:03023699996">
             <Button size="lg" variant="destructive" className="text-xl px-8">
               <Phone className="w-6 h-6 mr-3" />
-              +1 (555) 911-9111
+              0302 3699996
             </Button>
           </a>
+          <p className="text-sm text-muted-foreground mt-4">
+            Available: Mon-Sat 5:00 PM - 9:00 PM
+          </p>
         </div>
       </section>
 

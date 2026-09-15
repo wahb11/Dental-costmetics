@@ -12,8 +12,7 @@ export default function NotFound() {
         <div className="reveal-scale text-center px-4">
           <div className="mb-8">
             <h1 className="text-9xl font-bold gradient-text mb-4">404</h1>
-            <div className="text-6xl mb-4">🦷</div>
-            <h2 className="text-4xl font-bold mb-4">Page Not Found</h2>
+            <h2 className="text-4xl font-semibold mb-4">Page Not Found</h2>
             <p className="text-xl text-muted-foreground max-w-md mx-auto mb-8">
               Oops! It looks like this page has gone missing. Don&apos;t worry, your smile is still safe with us!
             </p>

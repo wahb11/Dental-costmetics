@@ -4,17 +4,14 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Phone, Calendar } from "lucide-react";
+import { Menu, X, Phone, Calendar, Moon, Sun, Smile } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
-import { Moon, Sun } from "lucide-react";
 
 const navigation = [
   { name: "Home", href: "/" },
-  { name: "About", href: "/about" },
   { name: "Services", href: "/services" },
-  { name: "Doctors", href: "/doctors" },
-  { name: "Blog", href: "/blog" },
+  { name: "About Dr. Moazzam", href: "/doctors" },
   { name: "Contact", href: "/contact" },
 ];
 
@@ -53,17 +50,27 @@ export default function Navbar() {
         <div className="flex h-20 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
-              <span className="text-2xl text-white">🦷</span>
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary flex-shrink-0">
+              <Smile className="h-6 w-6 text-white" />
             </div>
-            <span
-              className={cn(
-                "font-[family-name:var(--font-display)] text-2xl font-bold",
-                isHomeHero ? "text-white" : "gradient-text"
-              )}
-            >
-              SmileSync
-            </span>
+            <div className="flex flex-col">
+              <span
+                className={cn(
+                  "font-[family-name:var(--font-display)] text-base sm:text-lg font-bold leading-tight",
+                  isHomeHero ? "text-white" : "gradient-text"
+                )}
+              >
+                Dental Cosmetics
+              </span>
+              <span
+                className={cn(
+                  "text-[10px] sm:text-xs font-medium leading-tight",
+                  isHomeHero ? "text-white/70" : "text-muted-foreground"
+                )}
+              >
+                & Root canal Center
+              </span>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
@@ -87,7 +94,7 @@ export default function Navbar() {
           </div>
 
           {/* Right Side Actions */}
-          <div className="hidden items-center space-x-4 md:flex">
+          <div className="hidden items-center space-x-2 md:space-x-4 md:flex">
             <button
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
               className={cn(
@@ -95,6 +102,7 @@ export default function Navbar() {
                 isHomeHero ? "text-white hover:bg-white/10" : "hover:bg-accent"
               )}
               suppressHydrationWarning
+              aria-label="Toggle theme"
             >
               {mounted ? (
                 theme === "dark" ? (
@@ -107,14 +115,14 @@ export default function Navbar() {
               )}
             </button>
 
-            <Link href="tel:+1234567890">
+            <Link href="tel:03023699996" className="hidden lg:block">
               <Button
                 variant="ghost"
                 size="sm"
                 className={isHomeHero ? "text-white hover:bg-white/10 hover:text-white" : ""}
               >
                 <Phone className="mr-2 h-4 w-4" />
-                Call Us
+                0302 3699996
               </Button>
             </Link>
 
@@ -127,7 +135,8 @@ export default function Navbar() {
                 )}
               >
                 <Calendar className="mr-2 h-4 w-4" />
-                Book Appointment
+                <span className="hidden md:inline">Book Appointment</span>
+                <span className="md:hidden">Book</span>
               </Button>
             </Link>
           </div>
@@ -164,13 +173,13 @@ export default function Navbar() {
                 {item.name}
               </Link>
             ))}
-            <div className="pt-4 flex flex-col space-y-2">
-              <Link href="tel:+1234567890" onClick={() => setIsOpen(false)}>
-                <Button variant="outline" className="w-full">
+            <div className="pt-4 space-y-2">
+              <a href="tel:03023699996" onClick={() => setIsOpen(false)} className="block">
+                <Button variant="outline" className="w-full justify-start">
                   <Phone className="w-4 h-4 mr-2" />
-                  Call Us
+                  Call: 0302 3699996
                 </Button>
-              </Link>
+              </a>
               <Link href="/appointments/book" onClick={() => setIsOpen(false)}>
                 <Button className="w-full">
                   <Calendar className="w-4 h-4 mr-2" />

@@ -10,284 +10,358 @@ import PageMotion from "@/components/motion/PageMotion";
 import { Calendar, CheckCircle, Clock, DollarSign, ArrowLeft } from "lucide-react";
 
 const servicesData: Record<string, any> = {
-  "general-dentistry": {
-    title: "General Dentistry",
-    description: "Comprehensive oral health care for the whole family",
-    icon: "🦷",
-    duration: "30-60 min",
-    priceRange: "$80-$200",
-    fullDescription: "Our general dentistry services provide comprehensive oral health care to keep your teeth and gums healthy. We focus on preventive care to help you maintain optimal oral health and catch potential issues early.",
+  "root-canal": {
+    title: "Root Canal Treatment",
+    description: "Save infected teeth and eliminate pain with advanced endodontic care",
+    duration: "60-90 min",
+    priceRange: "Contact for pricing",
+    fullDescription:
+      "Root canal therapy removes infected pulp, cleans the canals, and seals the tooth so you can keep your natural smile pain-free. Dr. Moazzam specializes in painless root canal treatments using the latest techniques and equipment.",
+    causes: [
+      "Deep tooth decay reaching the pulp",
+      "Cracked or chipped tooth",
+      "Repeated dental procedures on the same tooth",
+      "Tooth trauma or injury",
+      "Bacterial infection in the tooth pulp",
+    ],
+    symptoms: [
+      "Severe toothache when chewing or applying pressure",
+      "Prolonged sensitivity to hot or cold temperatures",
+      "Discoloration (darkening) of the tooth",
+      "Swelling and tenderness in nearby gums",
+      "Persistent or recurring pimple on the gums (abscess)",
+      "Bad taste in mouth or bad breath",
+    ],
     benefits: [
-      "Prevent dental problems before they start",
-      "Maintain healthy teeth and gums",
-      "Early detection of oral health issues",
-      "Professional cleaning and polishing",
-      "Personalized oral hygiene guidance",
+      "Relieve toothache and infection",
+      "Preserve your natural tooth",
+      "Prevent spread of infection to surrounding teeth",
+      "Restore normal chewing function",
+      "Cost-effective compared to tooth extraction and implant",
+      "Maintain natural appearance of your smile",
     ],
     procedures: [
-      { name: "Dental Examination", description: "Comprehensive oral health assessment" },
-      { name: "Professional Cleaning", description: "Remove plaque and tartar buildup" },
-      { name: "X-rays", description: "Diagnostic imaging when needed" },
-      { name: "Fluoride Treatment", description: "Strengthen tooth enamel" },
-      { name: "Oral Cancer Screening", description: "Early detection screening" },
+      { name: "Diagnosis & X-rays", description: "Comprehensive examination and imaging to confirm infection and plan treatment" },
+      { name: "Anesthesia", description: "Local anesthesia to ensure painless procedure" },
+      { name: "Pulp Removal", description: "Remove infected or damaged pulp tissue from tooth interior" },
+      { name: "Canal Cleaning", description: "Clean, disinfect, and shape the root canals" },
+      { name: "Filling & Sealing", description: "Fill canals with biocompatible material and seal the tooth" },
+      { name: "Restoration", description: "Crown or filling placement for lasting strength and protection" },
     ],
     faqs: [
       {
-        question: "How often should I visit the dentist?",
-        answer: "We recommend visiting every 6 months for routine checkups and cleanings.",
+        question: "Is a root canal painful?",
+        answer: "With modern anesthesia and Dr. Moazzam's gentle technique, most patients experience little to no discomfort. The procedure actually relieves the pain caused by infection.",
       },
       {
-        question: "Does dental cleaning hurt?",
-        answer: "Professional cleanings are generally painless. Some sensitivity is normal if you have gum disease.",
+        question: "Do I always need a crown after root canal?",
+        answer: "For back teeth (molars), a crown is highly recommended to protect the tooth from fracture. Front teeth may only need a filling depending on the extent of damage.",
+      },
+      {
+        question: "How long does recovery take?",
+        answer: "Most patients return to normal activities the next day. Some mild sensitivity may last a few days and can be managed with over-the-counter pain relievers.",
       },
     ],
   },
-  "cosmetic-dentistry": {
-    title: "Cosmetic Dentistry",
-    description: "Transform your smile with advanced cosmetic procedures",
-    icon: "✨",
-    duration: "60-120 min",
-    priceRange: "$300-$2,000",
-    fullDescription: "Enhance your smile's appearance with our comprehensive cosmetic dentistry services. We use the latest techniques and materials to give you the confident, beautiful smile you deserve.",
+  "teeth-whitening": {
+    title: "Teeth Whitening & Bleaching",
+    description: "Professional whitening for a brighter, more confident smile",
+    duration: "60-90 min",
+    priceRange: "Contact for pricing",
+    fullDescription:
+      "Our professional teeth whitening treatments safely lift stains and discoloration for a noticeably brighter smile. Dr. Moazzam uses advanced whitening systems that deliver dramatic results while protecting your enamel.",
+    causes: [
+      "Coffee, tea, and red wine consumption",
+      "Tobacco use (smoking or chewing)",
+      "Natural aging process",
+      "Certain medications (antibiotics, antihistamines)",
+      "Poor dental hygiene",
+      "Fluorosis (excessive fluoride during tooth development)",
+    ],
+    symptoms: [
+      "Yellow or brown tooth discoloration",
+      "Surface stains on enamel",
+      "Dull or lackluster smile",
+      "Uneven tooth color",
+      "Loss of confidence in appearance",
+    ],
     benefits: [
-      "Boost your self-confidence",
-      "Improve smile aesthetics",
-      "Natural-looking results",
-      "Long-lasting transformations",
-      "Customized treatment plans",
+      "Dramatically whiter teeth in one visit",
+      "Boost self-confidence and self-esteem",
+      "Safe and dentist-supervised treatment",
+      "Customized to your desired shade",
+      "Long-lasting results with proper care",
+      "Non-invasive cosmetic enhancement",
     ],
     procedures: [
-      { name: "Porcelain Veneers", description: "Ultra-thin shells for perfect teeth" },
-      { name: "Teeth Bonding", description: "Repair chips and gaps" },
-      { name: "Smile Makeover", description: "Complete smile transformation" },
-      { name: "Gum Contouring", description: "Reshape your gum line" },
+      { name: "Consultation", description: "Assess current tooth color and set whitening goals" },
+      { name: "Dental Cleaning", description: "Remove surface debris for optimal results" },
+      { name: "Shade Selection", description: "Choose your target shade with professional guidance" },
+      { name: "Gum Protection", description: "Apply protective barrier to gums and soft tissue" },
+      { name: "Whitening Application", description: "Apply professional-strength whitening gel" },
+      { name: "Light Activation", description: "LED light activation for enhanced results (if applicable)" },
+      { name: "Final Rinse", description: "Remove gel and reveal your brighter smile" },
+      { name: "Aftercare Instructions", description: "Tips to maintain your new brilliant smile" },
     ],
     faqs: [
       {
-        question: "How long do veneers last?",
-        answer: "With proper care, porcelain veneers can last 10-15 years or longer.",
+        question: "How long do whitening results last?",
+        answer: "Results typically last 1-3 years depending on lifestyle habits. Avoiding staining foods and maintaining good oral hygiene extends the results.",
       },
       {
-        question: "Is cosmetic dentistry covered by insurance?",
-        answer: "Most cosmetic procedures are not covered, but we offer flexible payment plans.",
+        question: "Will whitening make my teeth sensitive?",
+        answer: "Mild temporary sensitivity is common but usually resolves within 1-2 days. Dr. Moazzam can recommend desensitizing treatments if needed.",
+      },
+      {
+        question: "Can all teeth be whitened?",
+        answer: "Natural teeth respond well to whitening. Crowns, veneers, and fillings won't change color, so we'll help you understand what to expect based on your dental work.",
       },
     ],
   },
   "dental-implants": {
     title: "Dental Implants",
-    description: "Permanent tooth replacement solutions",
-    icon: "🔧",
-    duration: "Multiple visits",
-    priceRange: "$2,000-$5,000",
-    fullDescription: "Dental implants are the gold standard for tooth replacement. They look, feel, and function just like natural teeth, providing a permanent solution that preserves your jawbone and facial structure.",
+    description: "Permanent tooth replacement solutions that look and function like natural teeth",
+    duration: "Multiple visits (3-6 months process)",
+    priceRange: "Contact for pricing",
+    fullDescription: "Dental implants are the gold standard for tooth replacement. Dr. Moazzam provides expertly placed implants that look, feel, and function just like natural teeth, providing a permanent solution that preserves your jawbone and facial structure.",
+    causes: [
+      "Tooth loss due to decay or infection",
+      "Periodontal (gum) disease",
+      "Tooth trauma or injury",
+      "Congenital absence of teeth",
+      "Failed root canal treatment",
+      "Severe tooth fracture",
+    ],
+    symptoms: [
+      "One or more missing teeth",
+      "Difficulty chewing or speaking",
+      "Shifting of adjacent teeth",
+      "Bone loss in the jaw",
+      "Changes in facial appearance",
+      "Loss of confidence in smile",
+      "Discomfort from ill-fitting dentures",
+    ],
     benefits: [
-      "Permanent tooth replacement",
-      "Natural look and feel",
-      "Preserve jawbone health",
-      "Improved chewing ability",
-      "No impact on adjacent teeth",
+      "Permanent tooth replacement solution",
+      "Natural look, feel, and function",
+      "Preserve jawbone and prevent bone loss",
+      "No impact on adjacent healthy teeth",
+      "Improved chewing ability and speech",
+      "Durable and long-lasting (can last a lifetime)",
+      "Easy maintenance like natural teeth",
+      "Prevent facial sagging from bone loss",
     ],
     procedures: [
-      { name: "Consultation & Planning", description: "3D imaging and treatment design" },
-      { name: "Implant Placement", description: "Surgical insertion of titanium post" },
-      { name: "Healing Period", description: "3-6 months osseointegration" },
-      { name: "Abutment Placement", description: "Connector for crown" },
-      { name: "Crown Placement", description: "Custom crown attachment" },
+      { name: "Initial Consultation", description: "Comprehensive exam, 3D imaging, and treatment planning" },
+      { name: "Bone Grafting (if needed)", description: "Build up jawbone if insufficient for implant support" },
+      { name: "Implant Placement Surgery", description: "Surgical insertion of titanium post into jawbone" },
+      { name: "Healing Period", description: "3-6 months osseointegration (implant fuses with bone)" },
+      { name: "Abutment Placement", description: "Attach connector piece to implant" },
+      { name: "Impression & Crown Fabrication", description: "Create custom crown to match your natural teeth" },
+      { name: "Crown Placement", description: "Attach final restoration for complete tooth replacement" },
+      { name: "Follow-up Care", description: "Regular checkups to ensure implant success" },
     ],
     faqs: [
       {
         question: "How long does the implant process take?",
-        answer: "The complete process typically takes 3-6 months from start to finish.",
+        answer: "The complete process typically takes 3-6 months from implant placement to final crown. This allows time for the implant to integrate with your jawbone.",
       },
       {
         question: "Are dental implants painful?",
-        answer: "The procedure is done under anesthesia. Most patients report minimal discomfort during recovery.",
+        answer: "The procedure is done under local anesthesia, so you won't feel pain during placement. Most patients report minimal discomfort during recovery, manageable with over-the-counter pain medication.",
+      },
+      {
+        question: "How long do dental implants last?",
+        answer: "With proper care and oral hygiene, dental implants can last a lifetime. The crown may need replacement after 10-15 years due to normal wear.",
+      },
+      {
+        question: "Am I a good candidate for dental implants?",
+        answer: "Most healthy adults with sufficient jawbone are good candidates. Dr. Moazzam will evaluate your specific situation during the consultation.",
       },
     ],
   },
-  "teeth-whitening": {
-    title: "Teeth Whitening",
-    description: "Professional whitening for a brighter, more confident smile",
-    icon: "💎",
-    duration: "60-90 min",
-    priceRange: "$300-$600",
+  "scaling": {
+    title: "Scaling & Teeth Cleaning",
+    description: "Professional deep cleaning to remove plaque, tartar and prevent gum disease",
+    duration: "45-60 min",
+    priceRange: "Contact for pricing",
     fullDescription:
-      "Our professional whitening treatments safely lift stains and discoloration for a noticeably brighter smile in a single visit or with custom take-home trays.",
+      "Professional teeth scaling and cleaning removes hardened plaque (tartar) and bacteria from teeth and below the gumline. Dr. Moazzam provides thorough yet gentle cleaning to maintain optimal oral health and prevent gum disease.",
+    causes: [
+      "Buildup of plaque and tartar on teeth",
+      "Poor or inconsistent oral hygiene",
+      "Infrequent dental visits",
+      "Diet high in sugars and starches",
+      "Smoking or tobacco use",
+      "Certain medications that reduce saliva",
+    ],
+    symptoms: [
+      "Yellow or brown deposits on teeth",
+      "Bad breath (halitosis) that persists",
+      "Swollen, red, or bleeding gums",
+      "Gum recession or sensitivity",
+      "Loose teeth or tooth mobility",
+      "Pain when chewing",
+      "Visible calculus (tartar) buildup",
+    ],
     benefits: [
-      "Faster, more predictable results than OTC kits",
-      "Dentist-supervised and enamel-safe",
-      "Custom shade matching",
-      "Long-lasting brightness with proper care",
+      "Remove stubborn plaque and tartar",
+      "Prevent gum disease and tooth decay",
+      "Fresher breath and cleaner mouth feel",
+      "Brighter, cleaner-looking teeth",
+      "Early detection of oral health issues",
+      "Reduce risk of systemic health problems",
+      "Maintain healthy gums and teeth",
     ],
     procedures: [
-      { name: "Shade Assessment", description: "Evaluate current color and goals" },
-      { name: "Protection", description: "Isolate gums and soft tissue" },
-      { name: "Whitening Application", description: "Professional-strength gel and light activation if needed" },
-      { name: "Aftercare Guidance", description: "Tips to maintain your new shade" },
+      { name: "Oral Examination", description: "Check teeth, gums, and overall oral health" },
+      { name: "Scaling", description: "Remove plaque and tartar from tooth surfaces and below gumline" },
+      { name: "Root Planing (if needed)", description: "Smooth root surfaces to prevent bacteria buildup" },
+      { name: "Polishing", description: "Polish teeth to remove surface stains" },
+      { name: "Fluoride Treatment", description: "Apply fluoride to strengthen enamel (optional)" },
+      { name: "Oral Hygiene Education", description: "Tips for effective home care between visits" },
     ],
     faqs: [
       {
-        question: "How long do results last?",
-        answer: "Typically 6–24 months depending on diet, smoking, and oral hygiene.",
+        question: "How often should I get scaling done?",
+        answer: "Dr. Moazzam recommends professional cleaning every 6 months for most patients. Those with gum disease may need more frequent visits (every 3-4 months).",
       },
       {
-        question: "Will whitening make my teeth sensitive?",
-        answer: "Mild temporary sensitivity is common and usually resolves within a day or two.",
+        question: "Does scaling damage tooth enamel?",
+        answer: "No, professional scaling is safe and does not damage enamel. It only removes hardened deposits that brushing cannot eliminate.",
+      },
+      {
+        question: "Will scaling hurt?",
+        answer: "Most patients experience little to no discomfort. If you have sensitive teeth or gum disease, local anesthesia can be applied to ensure comfort.",
+      },
+      {
+        question: "Why can't I just brush harder at home?",
+        answer: "Once plaque hardens into tartar (calculus), it cannot be removed by brushing alone. Professional instruments are needed to safely remove it.",
       },
     ],
   },
-  orthodontics: {
-    title: "Orthodontics & Braces",
-    description: "Straighten teeth with braces or clear aligners",
-    icon: "🎯",
-    duration: "12-24 months",
-    priceRange: "$3,000-$8,000",
-    fullDescription:
-      "From traditional braces to clear aligners, our orthodontic care corrects bite issues and creates balanced, confident smiles for teens and adults.",
-    benefits: [
-      "Improved bite and jaw alignment",
-      "Easier cleaning and healthier gums",
-      "Discreet clear aligner options",
-      "Customized treatment timelines",
-    ],
-    procedures: [
-      { name: "Consultation & Scan", description: "Digital imaging and treatment planning" },
-      { name: "Appliance Placement", description: "Braces or aligner fitting" },
-      { name: "Progress Visits", description: "Adjustments and monitoring" },
-      { name: "Retention", description: "Retainers to protect your new smile" },
-    ],
-    faqs: [
-      {
-        question: "Are clear aligners right for me?",
-        answer: "They work well for many mild-to-moderate cases. Complex bites may need braces.",
-      },
-      {
-        question: "How often are appointments?",
-        answer: "Usually every 6–10 weeks depending on your treatment plan.",
-      },
-    ],
-  },
-  "root-canal": {
-    title: "Root Canal Treatment",
-    description: "Save infected teeth and eliminate pain",
-    icon: "🏥",
-    duration: "60-90 min",
-    priceRange: "$800-$1,500",
-    fullDescription:
-      "Root canal therapy removes infected pulp, cleans the canals, and seals the tooth so you can keep your natural smile pain-free.",
-    benefits: [
-      "Relieve toothache and infection",
-      "Preserve your natural tooth",
-      "Prevent spread of infection",
-      "Restore chewing function",
-    ],
-    procedures: [
-      { name: "Diagnosis", description: "Exam and X-rays to confirm need" },
-      { name: "Cleaning", description: "Remove infected tissue from canals" },
-      { name: "Sealing", description: "Fill and seal the tooth" },
-      { name: "Restoration", description: "Crown or filling for lasting strength" },
-    ],
-    faqs: [
-      {
-        question: "Is a root canal painful?",
-        answer: "With modern anesthesia, most patients say it feels similar to getting a filling.",
-      },
-      {
-        question: "Do I always need a crown after?",
-        answer: "Often yes for back teeth, to protect the tooth from fracture.",
-      },
-    ],
-  },
-  "pediatric-dentistry": {
-    title: "Pediatric Dentistry",
-    description: "Gentle dental care designed for children",
-    icon: "👶",
+  "filling": {
+    title: "Tooth Filling",
+    description: "Restore damaged or decayed teeth with high-quality filling materials",
     duration: "30-45 min",
-    priceRange: "$60-$150",
+    priceRange: "Contact for pricing",
     fullDescription:
-      "We create positive first dental experiences with age-appropriate care, from cleanings and sealants to early orthodontic guidance.",
+      "Tooth fillings restore teeth damaged by decay, cracks, or wear. Dr. Moazzam uses modern composite materials that match your natural tooth color for seamless, durable restorations that preserve your smile's appearance.",
+    causes: [
+      "Tooth decay (cavities) from bacteria and acids",
+      "Cracked or fractured teeth",
+      "Worn teeth from grinding (bruxism)",
+      "Broken or chipped teeth from trauma",
+      "Erosion from acidic foods or GERD",
+      "Old fillings that need replacement",
+    ],
+    symptoms: [
+      "Toothache or pain when chewing",
+      "Sensitivity to hot, cold, or sweet foods",
+      "Visible holes or pits in teeth",
+      "Dark spots or discoloration",
+      "Rough or sharp edges on teeth",
+      "Food getting stuck in teeth",
+      "Bad taste or bad breath from decay",
+    ],
     benefits: [
-      "Kid-friendly environment",
-      "Preventive focus",
-      "Early detection of issues",
-      "Education for parents and kids",
+      "Stop decay from progressing",
+      "Restore tooth structure and function",
+      "Eliminate pain and sensitivity",
+      "Natural-looking tooth-colored materials",
+      "Quick and painless procedure",
+      "Prevent need for root canal or extraction",
+      "Long-lasting and durable results",
     ],
     procedures: [
-      { name: "Wellness Visit", description: "Exam, cleaning, and fluoride as needed" },
-      { name: "Sealants", description: "Protect molars from cavities" },
-      { name: "Growth Monitoring", description: "Track bite and jaw development" },
-      { name: "Habit Coaching", description: "Brushing and diet guidance" },
+      { name: "Examination & Diagnosis", description: "Identify extent of decay or damage with exam and X-rays" },
+      { name: "Anesthesia", description: "Local anesthetic to numb the area for comfortable treatment" },
+      { name: "Decay Removal", description: "Remove decayed or damaged tooth structure" },
+      { name: "Tooth Preparation", description: "Clean and shape the cavity for filling placement" },
+      { name: "Filling Placement", description: "Apply composite resin material in layers" },
+      { name: "Shaping & Polishing", description: "Contour filling to match natural tooth shape and polish" },
+      { name: "Bite Check", description: "Ensure proper bite alignment and comfort" },
     ],
     faqs: [
       {
-        question: "When should my child first visit?",
-        answer: "By their first birthday or within 6 months of the first tooth erupting.",
+        question: "How long do fillings last?",
+        answer: "Composite fillings typically last 5-10 years or longer with proper care. Longevity depends on location, size, and oral hygiene habits.",
       },
       {
-        question: "Are X-rays safe for kids?",
-        answer: "We use low-dose digital imaging only when clinically needed.",
+        question: "Will I feel pain during the filling?",
+        answer: "No, Dr. Moazzam uses local anesthesia to ensure you feel no pain during the procedure. You may feel slight pressure but no discomfort.",
+      },
+      {
+        question: "Can I eat immediately after a filling?",
+        answer: "With composite fillings, you can eat as soon as the numbness wears off (about 1-2 hours). Avoid very hard or sticky foods for the first day.",
+      },
+      {
+        question: "What's the difference between white and silver fillings?",
+        answer: "White (composite) fillings match your tooth color and bond to the tooth structure. Silver (amalgam) fillings are visible but very durable. Dr. Moazzam primarily uses tooth-colored fillings for aesthetic results.",
       },
     ],
   },
-  "emergency-dentistry": {
-    title: "Emergency Dental Care",
-    description: "Urgent care for pain, trauma, and sudden dental issues",
-    icon: "🚨",
-    duration: "Immediate",
-    priceRange: "$100-$500",
+  "bridges-dentures": {
+    title: "Bridges & Dentures",
+    description: "Custom-made bridges and dentures to restore your smile and function",
+    duration: "Multiple visits (2-4 weeks process)",
+    priceRange: "Contact for pricing",
     fullDescription:
-      "Same-day urgent care for severe pain, broken teeth, abscesses, and dental trauma—so you get relief fast.",
+      "Dental bridges and dentures are prosthetic solutions for missing teeth. Dr. Moazzam creates custom-fitted restorations that restore your ability to chew, speak, and smile with confidence. Whether you need to replace one tooth or a full arch, we have solutions tailored to your needs.",
+    causes: [
+      "Tooth loss from decay or gum disease",
+      "Tooth extraction due to damage",
+      "Trauma or injury",
+      "Congenital absence of teeth",
+      "Advanced periodontal disease",
+      "Failed dental restorations",
+    ],
+    symptoms: [
+      "One or more missing teeth",
+      "Difficulty chewing food",
+      "Slurred speech or difficulty speaking",
+      "Shifting of remaining teeth",
+      "Facial sagging or aged appearance",
+      "Jaw pain or TMJ issues",
+      "Loss of confidence in smile",
+      "Nutritional deficiencies from limited diet",
+    ],
     benefits: [
-      "Rapid pain relief",
-      "Same-day appointments when available",
-      "Stabilization of injuries",
-      "Clear next-step treatment plans",
+      "Restore ability to eat and chew properly",
+      "Improve speech and pronunciation",
+      "Prevent remaining teeth from shifting",
+      "Support facial structure and appearance",
+      "Boost self-confidence and smile",
+      "Customized for natural appearance",
+      "Affordable tooth replacement option",
+      "Improve overall quality of life",
     ],
     procedures: [
-      { name: "Triage", description: "Assess urgency and symptoms" },
-      { name: "Pain Control", description: "Medication and local anesthesia as needed" },
-      { name: "Stabilization", description: "Temporary repairs or drainage" },
-      { name: "Follow-up Plan", description: "Definitive treatment scheduling" },
+      { name: "Consultation", description: "Evaluate oral health and discuss replacement options" },
+      { name: "Impressions & Measurements", description: "Take precise molds of your mouth" },
+      { name: "Tooth Preparation (for bridges)", description: "Shape adjacent teeth to support the bridge" },
+      { name: "Temporary Restoration", description: "Provide temporary prosthetic while permanent is made" },
+      { name: "Fabrication", description: "Custom creation of bridge or denture in dental lab" },
+      { name: "Fitting & Adjustments", description: "Try in prosthetic and make necessary adjustments" },
+      { name: "Final Placement", description: "Permanently cement bridge or deliver denture" },
+      { name: "Follow-up Care", description: "Instruction on care and maintenance, schedule checkups" },
     ],
     faqs: [
       {
-        question: "What counts as a dental emergency?",
-        answer: "Uncontrolled pain, swelling, trauma, knocked-out teeth, and uncontrolled bleeding.",
+        question: "What's the difference between a bridge and a denture?",
+        answer: "A bridge is fixed (cemented) and replaces one or more teeth using adjacent teeth for support. Dentures are removable and can replace several teeth (partial denture) or all teeth (full denture).",
       },
       {
-        question: "Should I go to the ER?",
-        answer: "For life-threatening issues yes; for most tooth pain, call us first.",
-      },
-    ],
-  },
-  "oral-surgery": {
-    title: "Oral Surgery",
-    description: "Extractions teeth, wisdom teeth, and surgical care",
-    icon: "⚕️",
-    duration: "45-120 min",
-    priceRange: "$200-$2,000",
-    fullDescription:
-      "Our surgical team provides extractions-tooth care, wisdom teeth removal, and related procedures with a focus on comfort and smooth recovery.",
-    benefits: [
-      "Experienced surgical clinicians",
-      "Minimally invasive techniques when possible",
-      "Clear recovery instructions",
-      "Sedation options when appropriate",
-    ],
-    procedures: [
-      { name: "Consultation", description: "Exam, imaging, and planning" },
-      { name: "Procedure", description: "Extraction or surgical treatment" },
-      { name: "Recovery Support", description: "Medications and aftercare" },
-      { name: "Follow-up", description: "Healing check and next steps" },
-    ],
-    faqs: [
-      {
-        question: "How long is recovery after wisdom teeth removal?",
-        answer: "Most people feel significantly better within 3–7 days.",
+        question: "How long do bridges and dentures last?",
+        answer: "Bridges typically last 10-15 years or longer. Dentures usually need replacement or relining every 5-7 years as the jawbone changes shape.",
       },
       {
-        question: "Will I be sedated?",
-        answer: "Options range from local anesthesia to sedation based on complexity and preference.",
+        question: "Will dentures affect how I eat?",
+        answer: "There's an adjustment period, but most patients adapt quickly. Start with soft foods and gradually progress to your regular diet. Properly fitted dentures restore most chewing function.",
+      },
+      {
+        question: "Are bridges better than implants?",
+        answer: "Both have advantages. Bridges are faster and more affordable but require altering adjacent teeth. Implants preserve natural teeth but take longer and cost more. Dr. Moazzam will help you choose the best option.",
       },
     ],
   },
@@ -330,8 +404,7 @@ export default function ServiceDetailPage() {
             </Button>
           </Link>
 
-          <div className="flex items-start space-x-6">
-            <div className="hero-anim-scale text-6xl">{service.icon}</div>
+          <div className="flex items-start">
             <div className="flex-1">
               <h1 className="hero-anim text-5xl font-bold mb-4">{service.title}</h1>
               <p className="hero-anim text-xl text-muted-foreground mb-6">
@@ -366,9 +439,39 @@ export default function ServiceDetailPage() {
                 </p>
               </div>
 
+              {/* Causes */}
+              {service.causes && (
+                <div className="reveal">
+                  <h2 className="text-3xl font-bold mb-6">Common Causes</h2>
+                  <div className="reveal-stagger grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {service.causes.map((cause: string, index: number) => (
+                      <div key={index} className="reveal-item flex items-start space-x-3 p-4 bg-red-50 rounded-lg border border-red-100">
+                        <span className="text-red-500 text-xl flex-shrink-0">⚠️</span>
+                        <span className="text-sm">{cause}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Symptoms */}
+              {service.symptoms && (
+                <div className="reveal">
+                  <h2 className="text-3xl font-bold mb-6">Signs & Symptoms</h2>
+                  <div className="reveal-stagger grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {service.symptoms.map((symptom: string, index: number) => (
+                      <div key={index} className="reveal-item flex items-start space-x-3 p-4 bg-orange-50 rounded-lg border border-orange-100">
+                        <span className="text-orange-500 text-xl flex-shrink-0">🔍</span>
+                        <span className="text-sm">{symptom}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Benefits */}
               <div className="reveal">
-                <h2 className="text-3xl font-bold mb-6">Benefits</h2>
+                <h2 className="text-3xl font-bold mb-6">Benefits of Treatment</h2>
                 <div className="reveal-stagger grid grid-cols-1 md:grid-cols-2 gap-4">
                   {service.benefits.map((benefit: string, index: number) => (
                     <div key={index} className="reveal-item flex items-start space-x-3">
@@ -381,7 +484,7 @@ export default function ServiceDetailPage() {
 
               {/* Procedure Steps */}
               <div className="reveal">
-                <h2 className="text-3xl font-bold mb-6">Procedure Steps</h2>
+                <h2 className="text-3xl font-bold mb-6">Treatment Process</h2>
                 <div className="reveal-stagger space-y-4">
                   {service.procedures.map((procedure: any, index: number) => (
                     <Card key={index} className="reveal-item">

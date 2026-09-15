@@ -21,7 +21,7 @@ const blogPosts = [
     author: "Dr. Sarah Johnson",
     date: "2026-07-20",
     category: "Dental Health",
-    image: "🦷",
+    image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=800",
     readTime: "5 min read",
   },
   {
@@ -34,7 +34,7 @@ const blogPosts = [
     author: "Dr. James Wilson",
     date: "2026-07-18",
     category: "Treatments",
-    image: "🔧",
+    image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=800",
     readTime: "8 min read",
   },
   {
@@ -47,7 +47,7 @@ const blogPosts = [
     author: "Dr. Emily Rodriguez",
     date: "2026-07-15",
     category: "Cosmetic Dentistry",
-    image: "✨",
+    image: "https://images.unsplash.com/photo-1609137144813-7d9921338f24?w=800",
     readTime: "6 min read",
   },
   {
@@ -60,7 +60,7 @@ const blogPosts = [
     author: "Dr. Michael Chen",
     date: "2026-07-12",
     category: "Orthodontics",
-    image: "🎯",
+    image: "https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=800",
     readTime: "7 min read",
   },
   {
@@ -73,7 +73,7 @@ const blogPosts = [
     author: "Dr. Lisa Anderson",
     date: "2026-07-10",
     category: "Pediatric Dentistry",
-    image: "👶",
+    image: "https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=800",
     readTime: "6 min read",
   },
   {
@@ -86,7 +86,7 @@ const blogPosts = [
     author: "Dr. Robert Kim",
     date: "2026-07-08",
     category: "Treatments",
-    image: "🏥",
+    image: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=800",
     readTime: "5 min read",
   },
 ];

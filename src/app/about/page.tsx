@@ -6,7 +6,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import PageMotion from "@/components/motion/PageMotion";
 import Link from "next/link";
-import { Award, Heart, Users, Target, Calendar, Sparkles } from "lucide-react";
+import { Award, Heart, Users, Target, Calendar, Zap } from "lucide-react";
 
 const milestones = [
   {
@@ -37,7 +37,7 @@ const milestones = [
   {
     year: "2026",
     title: "Innovation",
-    description: "SmileSync platform launched with AI diagnostics",
+    description: "SmileSync platform launched with advanced digital diagnostics",
   },
 ];
 
@@ -53,7 +53,7 @@ const values = [
     description: "We maintain the highest standards in dental care",
   },
   {
-    icon: Sparkles,
+    icon: Zap,
     title: "Innovation",
     description: "Embracing cutting-edge technology and techniques",
   },
@@ -126,7 +126,7 @@ export default function AboutPage() {
 
             <Card className="reveal-right shadow-premium">
               <CardContent className="p-8">
-                <Sparkles className="mb-4 h-12 w-12 text-primary" />
+                <Target className="mb-4 h-12 w-12 text-primary" />
                 <h2 className="mb-4 text-3xl font-bold">Our Vision</h2>
                 <p className="text-lg leading-relaxed text-muted-foreground">
                   To revolutionize dental care by seamlessly integrating

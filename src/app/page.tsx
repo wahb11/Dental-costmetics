@@ -10,33 +10,36 @@ import { Card, CardContent } from "@/components/ui/card";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/home/HeroSection";
+import BeforeAfterSlider from "@/components/BeforeAfterSlider";
 import {
   Calendar,
   Shield,
   Clock,
   Award,
   Heart,
-  Sparkles,
+  Zap,
   ArrowRight,
   Users,
   TrendingUp,
   ChevronRight,
+  Star,
+  CheckCircle,
 } from "lucide-react";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const services = [
   {
-    title: "General Dentistry",
-    description: "Comprehensive care for your oral health",
+    title: "Root Canal Treatment",
+    description: "Expert root canal therapy with minimal discomfort",
     icon: Shield,
-    href: "/services/general-dentistry",
+    href: "/services/root-canal",
   },
   {
     title: "Cosmetic Dentistry",
     description: "Transform your smile with confidence",
-    icon: Sparkles,
-    href: "/services/cosmetic-dentistry",
+    icon: Zap,
+    href: "/services/teeth-whitening",
   },
   {
     title: "Dental Implants",
@@ -45,17 +48,17 @@ const services = [
     href: "/services/dental-implants",
   },
   {
-    title: "Orthodontics",
-    description: "Straighten teeth for a perfect smile",
+    title: "Scaling & Cleaning",
+    description: "Professional cleaning for healthy teeth",
     icon: Heart,
-    href: "/services/orthodontics",
+    href: "/services/scaling",
   },
 ];
 
 const stats = [
   { label: "Years Experience", value: "15+", target: 15, suffix: "+", icon: Award },
   { label: "Success Rate", value: "98%", target: 98, suffix: "%", icon: TrendingUp },
-  { label: "Happy Patients", value: "10,000+", target: 10000, suffix: "+", icon: Users },
+  { label: "Happy Patients", value: "1,000+", target: 1000, suffix: "+", icon: Users },
 ];
 
 const coreValues = [
@@ -91,23 +94,23 @@ const coreValues = [
 
 const features = [
   {
-    title: "Modern Technology",
-    description: "State-of-the-art equipment for precise treatments",
-    icon: Sparkles,
+    title: "Latest Technology",
+    description: "State-of-the-art equipment for precise, comfortable treatments",
+    icon: Zap,
   },
   {
-    title: "24/7 Emergency Care",
-    description: "Always here when you need us most",
-    icon: Clock,
-  },
-  {
-    title: "Expert Team",
-    description: "Highly trained and experienced professionals",
+    title: "Expert Care",
+    description: "Dr. Moazzam's 15+ years of specialized dental expertise",
     icon: Award,
   },
   {
-    title: "Insurance Accepted",
-    description: "We work with all major insurance providers",
+    title: "Gentle Approach",
+    description: "Painless procedures with a caring, professional touch",
+    icon: Heart,
+  },
+  {
+    title: "Proven Results",
+    description: "4.9/5 rating with 63+ satisfied patient reviews",
     icon: Shield,
   },
 ];
@@ -517,7 +520,7 @@ export default function HomePage() {
               Our <span className="text-primary">Services</span>
             </h2>
             <p className="mx-auto max-w-2xl text-xl text-muted-foreground">
-              Comprehensive dental care tailored to your unique needs
+              Expert dental care by Dr. Moazzam at Dental Cosmetics & Root canal Center
             </p>
           </div>
 
@@ -543,15 +546,58 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Before & After Section */}
+      <section className="anim-section py-24 md:py-28 bg-gradient-to-b from-white to-[#f4f8fb]">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-14">
+            <h2 className="mb-4 font-[family-name:var(--font-display)] text-4xl font-medium md:text-5xl">
+              <span className="text-primary">Transformations</span> That Speak
+            </h2>
+            <p className="mx-auto max-w-2xl text-xl text-muted-foreground">
+              See the amazing results Dr. Moazzam achieves for our patients
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+            <BeforeAfterSlider
+              beforeImage="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=800&q=80"
+              afterImage="https://images.unsplash.com/photo-1609137144813-7d9921338f24?w=800&q=80"
+              beforeLabel="Before"
+              afterLabel="After"
+              className="rounded-xl overflow-hidden shadow-xl"
+            />
+            <BeforeAfterSlider
+              beforeImage="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=800&q=80"
+              afterImage="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=800&q=80"
+              beforeLabel="Before"
+              afterLabel="After"
+              className="rounded-xl overflow-hidden shadow-xl"
+            />
+          </div>
+
+          <div className="text-center">
+            <p className="text-muted-foreground mb-6">
+              Ready to transform your smile? Book your consultation today
+            </p>
+            <Link href="/appointments/book">
+              <Button size="lg" className="shadow-lg">
+                <Calendar className="mr-2 h-5 w-5" />
+                Schedule Consultation
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Features */}
       <section className="anim-section features-section bg-[#eef5fa] py-24 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="features-heading mb-14 text-center">
             <h2 className="mb-4 font-[family-name:var(--font-display)] text-4xl font-medium md:text-5xl">
-              Why Choose <span className="text-primary">SmileSync</span>
+              Why Choose <span className="text-primary">Us</span>
             </h2>
             <p className="mx-auto max-w-2xl text-xl text-muted-foreground">
-              Experience the difference with our patient-first approach
+              Experience excellence at Dental Cosmetics & Root canal Center
             </p>
           </div>
 
@@ -572,6 +618,115 @@ export default function HomePage() {
                 </CardContent>
               </Card>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="anim-section py-24 md:py-32 bg-white">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-14">
+            <h2 className="mb-4 font-[family-name:var(--font-display)] text-4xl font-medium md:text-5xl">
+              What Our <span className="text-primary">Patients Say</span>
+            </h2>
+            <p className="mx-auto max-w-2xl text-xl text-muted-foreground">
+              Real experiences from our satisfied patients
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+            {[
+              {
+                name: "Feryal Malik",
+                review: "My experience at Dental Cosmetics with Dr. Moazzam was exceptional. Got my tooth filling and scaling done and I must say he is a very competent and thorough professional.",
+                rating: 5
+              },
+              {
+                name: "Assad Ali Rizvi",
+                review: "Excellent dental care. The staff was friendly, professional, and made me feel at ease. The dentist explained everything clearly. Highly recommend!",
+                rating: 5
+              },
+              {
+                name: "Mehreen Ali",
+                review: "Dr. Moazzam's professionalism and competence were evident throughout. With several treatments including root canals, fillings, and bridges, the results were outstanding!",
+                rating: 5
+              }
+            ].map((testimonial, index) => (
+              <Card key={index} className="reveal-item">
+                <CardContent className="p-6">
+                  <div className="mb-4 flex">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                    ))}
+                  </div>
+                  <p className="mb-4 text-muted-foreground italic">"{testimonial.review}"</p>
+                  <p className="font-semibold">{testimonial.name}</p>
+                  <p className="text-sm text-muted-foreground">Google Review</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <p className="text-lg text-muted-foreground mb-4">
+              <strong>4.9/5</strong> rating from <strong>63+ Google reviews</strong>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* About Dr. Moazzam Section */}
+      <section className="anim-section py-16 md:py-24 lg:py-32 bg-gradient-to-br from-[#001a4d] via-[#003380] to-[#001a4d] text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=1400')] bg-cover bg-center opacity-10 mix-blend-overlay" />
+        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            <div>
+              <h2 className="mb-4 lg:mb-6 font-[family-name:var(--font-display)] text-3xl sm:text-4xl font-medium md:text-5xl">
+                Meet <span className="text-sky-300">Dr. Moazzam</span>
+              </h2>
+              <p className="text-base lg:text-lg text-sky-100/80 mb-4 lg:mb-6 leading-relaxed">
+                With over 15 years of experience, Dr. Moazzam is renowned for his expertise in cosmetic dentistry and painless root canal treatments. His gentle approach and meticulous attention to detail have earned him the trust of thousands of patients across Lahore.
+              </p>
+              <div className="space-y-3 lg:space-y-4 mb-6 lg:mb-8">
+                <div className="flex items-start space-x-3">
+                  <CheckCircle className="h-5 w-5 lg:h-6 lg:w-6 text-sky-300 flex-shrink-0 mt-1" />
+                  <div>
+                    <p className="font-semibold text-white text-sm lg:text-base">15+ Years Experience</p>
+                    <p className="text-sky-100/70 text-sm lg:text-base">Specialized in advanced dental procedures</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <CheckCircle className="h-5 w-5 lg:h-6 lg:w-6 text-sky-300 flex-shrink-0 mt-1" />
+                  <div>
+                    <p className="font-semibold text-white text-sm lg:text-base">Latest Technology</p>
+                    <p className="text-sky-100/70 text-sm lg:text-base">State-of-the-art equipment and techniques</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <CheckCircle className="h-5 w-5 lg:h-6 lg:w-6 text-sky-300 flex-shrink-0 mt-1" />
+                  <div>
+                    <p className="font-semibold text-white text-sm lg:text-base">Patient-Centered Care</p>
+                    <p className="text-sky-100/70 text-sm lg:text-base">Comfortable, caring environment for all</p>
+                  </div>
+                </div>
+              </div>
+              <Link href="/doctors">
+                <Button size="lg" className="bg-sky-400 text-[#031525] hover:bg-sky-300 w-full sm:w-auto">
+                  Learn More About Dr. Moazzam
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
+            </div>
+            <div className="flex justify-center mt-8 lg:mt-0">
+              <div className="relative w-full max-w-sm lg:max-w-md">
+                <div className="absolute inset-0 bg-sky-400/20 blur-3xl rounded-full"></div>
+                <img 
+                  src="/images/dr-moazzam.png" 
+                  alt="Dr. Moazzam"
+                  className="relative rounded-2xl shadow-2xl w-full"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </section>

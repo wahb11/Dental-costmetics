@@ -10,16 +10,14 @@ import { ArrowRight, Calendar, ChevronDown } from "lucide-react";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-const headline = ["Your", "smile", "deserves", "extraordinary", "care."];
+const headline = ["Exceptional", "dental", "care", "in", "Lahore."];
 const marqueeItems = [
-  "General Dentistry",
-  "Cosmetic Care",
-  "Implants",
-  "Orthodontics",
-  "Whitening",
-  "Emergency",
-  "Pediatric",
-  "Surgery",
+  "Root Canal Treatment",
+  "Cosmetic Dentistry",
+  "Dental Implants",
+  "Teeth Whitening",
+  "Scaling & Cleaning",
+  "Bridges & Dentures",
 ];
 
 export default function HeroSection() {
@@ -208,7 +206,7 @@ export default function HeroSection() {
       <div ref={stageRef} className="absolute inset-0">
         <Image
           src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=2400&q=80"
-          alt="Modern SmileSync dental clinic interior"
+          alt="Dental Cosmetics & Root canal Center - Modern dental clinic"
           fill
           priority
           className="hero-bg-img object-cover will-change-transform"
@@ -224,8 +222,8 @@ export default function HeroSection() {
 
       <div className="hero-content relative z-10 w-full px-4 pb-28 pt-32 sm:px-6 lg:px-10">
         <div className="mx-auto max-w-7xl" style={{ perspective: "900px" }}>
-          <p className="hero-brand mb-6 font-[family-name:var(--font-display)] text-4xl font-semibold tracking-tight text-sky-200 sm:text-5xl md:text-6xl lg:text-7xl">
-            SmileSync
+          <p className="hero-brand mb-6 font-[family-name:var(--font-display)] text-3xl font-semibold tracking-tight text-sky-200 sm:text-4xl md:text-5xl lg:text-6xl">
+            Dental Cosmetics & Root canal Center
           </p>
 
           <h1 className="max-w-5xl font-[family-name:var(--font-display)] text-4xl font-medium leading-[1.05] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
@@ -243,8 +241,8 @@ export default function HeroSection() {
           </h1>
 
           <p className="hero-sub mt-6 max-w-xl text-base text-sky-50/80 sm:text-lg md:text-xl">
-            Modern dental care that blends clinical precision with calm, human
-            comfort — crafted around your smile.
+            Expert dental care by Dr. Moazzam in Model Town, Lahore. 
+            Specializing in cosmetic dentistry and painless root canal treatments.
           </p>
 
           <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">

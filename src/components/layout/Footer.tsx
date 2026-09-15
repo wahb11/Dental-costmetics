@@ -5,7 +5,7 @@ import Link from "next/link";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Phone, Mail, MapPin, Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, Facebook, Twitter, Instagram, Linkedin, Smile } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -13,10 +13,12 @@ gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const footerLinks = {
   services: [
-    { name: "General Dentistry", href: "/services/general-dentistry" },
-    { name: "Cosmetic Dentistry", href: "/services/cosmetic-dentistry" },
+    { name: "Root Canal Treatment", href: "/services/root-canal" },
+    { name: "Teeth Whitening", href: "/services/teeth-whitening" },
     { name: "Dental Implants", href: "/services/dental-implants" },
-    { name: "Orthodontics", href: "/services/orthodontics" },
+    { name: "Scaling & Cleaning", href: "/services/scaling" },
+    { name: "Tooth Filling", href: "/services/filling" },
+    { name: "Bridges & Dentures", href: "/services/bridges-dentures" },
   ],
   company: [
     { name: "About Us", href: "/about" },
@@ -69,26 +71,33 @@ export default function Footer() {
           {/* Brand */}
           <div className="footer-col lg:col-span-2">
             <Link href="/" className="flex items-center space-x-2 mb-4">
-              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-2xl">🦷</span>
+              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
+                <Smile className="h-6 w-6 text-white" />
               </div>
-              <span className="text-2xl font-bold gradient-text">SmileSync</span>
+              <span className="text-base sm:text-xl font-bold gradient-text">Dental Cosmetics & Root canal Center</span>
             </Link>
             <p className="text-sm text-muted-foreground mb-4">
-              Connecting Patients. Simplifying Care. Your trusted partner for modern dental care and management.
+              Excellence in dental care with Dr. Moazzam. Specializing in cosmetic dentistry and root canal treatments in Lahore.
             </p>
             <div className="space-y-2">
               <div className="flex items-center text-sm text-muted-foreground">
                 <Phone className="w-4 h-4 mr-2" />
-                <span>+1 (555) 123-4567</span>
+                <a href="tel:03023699996" className="hover:text-primary transition-colors">0302 3699996</a>
               </div>
               <div className="flex items-center text-sm text-muted-foreground">
                 <Mail className="w-4 h-4 mr-2" />
-                <span>contact@smilesync.com</span>
+                <a href="mailto:info@dentalcosmetics.pk" className="hover:text-primary transition-colors">info@dentalcosmetics.pk</a>
               </div>
-              <div className="flex items-center text-sm text-muted-foreground">
-                <MapPin className="w-4 h-4 mr-2" />
-                <span>123 Dental Street, Healthcare City</span>
+              <div className="flex items-start text-sm text-muted-foreground">
+                <MapPin className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" />
+                <span>Model town, bank square market, Block C Model Town, Lahore, 54700</span>
+              </div>
+              <div className="flex items-start text-sm text-muted-foreground">
+                <Clock className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" />
+                <div>
+                  <div>Mon-Sat: 5:00 PM - 9:00 PM</div>
+                  <div>Sunday: Closed</div>
+                </div>
               </div>
             </div>
           </div>
@@ -165,8 +174,8 @@ export default function Footer() {
 
         {/* Bottom */}
         <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-sm text-muted-foreground mb-4 md:mb-0" suppressHydrationWarning>
-            © {currentYear} SmileSync. All rights reserved.
+          <p className="text-sm text-muted-foreground mb-4 md:mb-0 text-center md:text-left" suppressHydrationWarning>
+            © {currentYear} Dental Cosmetics & Root canal Center. All rights reserved.
           </p>
           <div className="flex space-x-4">
             <a
