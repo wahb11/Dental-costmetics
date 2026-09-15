@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -659,7 +660,7 @@ export default function HomePage() {
                       <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
                     ))}
                   </div>
-                  <p className="mb-4 text-muted-foreground italic">&ldquo;{testimonial.review}&rdquo;</p>
+                  <p className="mb-4 text-muted-foreground italic">{testimonial.review}</p>
                   <p className="font-semibold">{testimonial.name}</p>
                   <p className="text-sm text-muted-foreground">Google Review</p>
                 </CardContent>
@@ -720,9 +721,11 @@ export default function HomePage() {
             <div className="flex justify-center mt-8 lg:mt-0">
               <div className="relative w-full max-w-sm lg:max-w-md">
                 <div className="absolute inset-0 bg-sky-400/20 blur-3xl rounded-full"></div>
-                <img 
+                <Image 
                   src="/images/dr-moazzam.png" 
                   alt="Dr. Moazzam"
+                  width={500}
+                  height={600}
                   className="relative rounded-2xl shadow-2xl w-full"
                 />
               </div>

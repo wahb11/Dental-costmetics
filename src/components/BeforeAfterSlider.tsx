@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import Image from "next/image";
 
 interface BeforeAfterSliderProps {
   beforeImage: string;
@@ -71,10 +72,11 @@ export default function BeforeAfterSlider({
     >
       {/* After Image (Background) */}
       <div className="absolute inset-0">
-        <img
+        <Image
           src={afterImage}
           alt={afterLabel}
-          className="h-full w-full object-cover"
+          fill
+          className="object-cover"
           draggable={false}
         />
         <div className="absolute top-2 sm:top-4 right-2 sm:right-4 bg-green-500 text-white px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold shadow-lg">
@@ -87,10 +89,11 @@ export default function BeforeAfterSlider({
         className="absolute inset-0"
         style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
       >
-        <img
+        <Image
           src={beforeImage}
           alt={beforeLabel}
-          className="h-full w-full object-cover"
+          fill
+          className="object-cover"
           draggable={false}
         />
         <div className="absolute top-2 sm:top-4 left-2 sm:left-4 bg-orange-500 text-white px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold shadow-lg">
